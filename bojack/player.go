@@ -45,13 +45,13 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	return p
 }
 
-func (p *Player) Update() {
+func (p *Player) Update(scene *Scene) {
 	if p.currentSpritePosition >= p.numberOfFrames {
 		p.currentSpritePosition = 0
 	} else {
 		p.currentSpritePosition = p.currentSpritePosition + 1
 	}
-	if p.keyPressed && shouldPress() {
+	if p.keyPressed { //&& shouldPress() {
 		p.speed += 0.1
 	} else {
 		p.speed /= 2
@@ -59,9 +59,10 @@ func (p *Player) Update() {
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
 	p.position = absPos
-	p.quad.SetPosition(p.position)
+	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	p.quad.SetTexture(p.runningSprites[p.currentSpritePosition])
 	//log.Printf("CURRENT POSITION #%d:", p.currentSpritePosition)
+	scene.UpdatePlayerPos(p.position.X())
 }
 
 func (p *Player) Draw(ctx *g.Context) {

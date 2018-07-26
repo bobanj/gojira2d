@@ -50,7 +50,7 @@ func main() {
 		scene.Update(speed)
 		updateHud()
 		for _, player := range players {
-			player.Update()
+			player.Update(scene)
 		}
 	}, func() {
 		scene.Draw(app.Context)
