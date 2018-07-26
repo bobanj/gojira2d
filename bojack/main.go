@@ -25,7 +25,7 @@ func main() {
 		}
 	})
 	app.MainLoop(func(speed float64) {
-		//NOOP
+		updateHud()
 	}, func() {
 		player.Draw(app.Context)
 		drawHud(app.UIContext)

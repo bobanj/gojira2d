@@ -31,6 +31,10 @@ func createHud() {
 	buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 }
 
+func updateHud()  {
+	
+}
+
 func drawHud(ctx *g.Context) {
 	if int32(glfw.GetTime()) % 2 == 0 {
 		buttonPressed.EnqueueForDrawing(ctx)
