@@ -17,7 +17,10 @@ func main() {
 	defer UnregisterKeyCallback()
 	createHud()
 
-	player := NewPlayer(mgl32.Vec3{15, 15, 0}, "bojack", 3)
+	//players := make([]*Player, 0, 32)
+	playerOne := NewPlayer(mgl32.Vec3{40, 110, 0}, mgl32.Vec2{0.15, 0.15}, "bojack", 3)
+	playerTwo := NewPlayer(mgl32.Vec3{40, 300, 0}, mgl32.Vec2{0.17, 0.17}, "todd", 3)
+	playerThree := NewPlayer(mgl32.Vec3{40, 480, 0}, mgl32.Vec2{0.25, 0.25}, "monkey", 3)
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		if action == glfw.Release {
 			log.Printf("#%d key:", key)
@@ -25,9 +28,13 @@ func main() {
 	})
 	app.MainLoop(func(speed float64) {
 		updateHud()
-		player.Update(0.3)
+		playerOne.Update(0.2)
+		playerTwo.Update(0.3)
+		playerThree.Update(0.4)
 	}, func() {
-		player.Draw(app.Context)
+		playerOne.Draw(app.Context)
+		playerTwo.Draw(app.Context)
+		playerThree.Draw(app.Context)
 		drawHud(app.UIContext)
 	})
 }
