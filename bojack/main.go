@@ -18,9 +18,9 @@ func main() {
 	scene := NewScene()
 
 	players := []*Player{
-		NewPlayer(mgl32.Vec3{40, 940, 0.3}, mgl32.Vec2{0.35, 0.35}, "bojack", 3, glfw.KeyQ),
-		NewPlayer(mgl32.Vec3{40, 1000, 0.2}, mgl32.Vec2{0.4, 0.4}, "monkey", 3, glfw.KeyP),
-		NewPlayer(mgl32.Vec3{40, 1060, 0.1}, mgl32.Vec2{0.34, 0.34}, "todd", 3, glfw.KeyB),
+		NewPlayer(mgl32.Vec3{40, 940, 0.3}, mgl32.Vec2{0.35, 0.35}, "bojack", 4, glfw.KeyQ),
+		NewPlayer(mgl32.Vec3{40, 1000, 0.2}, mgl32.Vec2{0.4, 0.4}, "monkey", 4, glfw.KeyP),
+		NewPlayer(mgl32.Vec3{40, 1060, 0.1}, mgl32.Vec2{0.34, 0.34}, "todd", 4, glfw.KeyB),
 	}
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		switch action {
