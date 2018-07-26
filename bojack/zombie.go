@@ -45,12 +45,12 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	return zombie
 }
 
-func (zombie *Zombie) Update() {
+func (zombie *Zombie) Update(scene *Scene)  {
 	zombie.currentSpritePosition = math.Mod(zombie.currentSpritePosition+zombie.animationSpeed, float64(zombie.numberOfFrames))
 	absPos := zombie.position
 	absPos = absPos.Add(mgl32.Vec3{zombie.speed, 0, 0})
 	zombie.position = absPos
-	zombie.quad.SetPosition(zombie.position)
+	zombie.quad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
 }
 
