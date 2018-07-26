@@ -40,8 +40,8 @@ func init() {
 	}
 }
 
-func Init(windowWidth int, windowHeight int, windowCentered bool, windowTitle string) {
-	window = initWindow(windowWidth, windowHeight, windowTitle)
+func Init(windowWidth int, windowHeight int, windowCentered bool, windowTitle string, fullScreen bool) {
+	window = initWindow(windowWidth, windowHeight, windowTitle, fullScreen)
 	Context = &g.Context{}
 	Context.SetOrtho2DProjection(windowWidth, windowHeight, 1, windowCentered)
 	UIContext = &g.Context{}
@@ -67,14 +67,17 @@ func Terminate() {
 	glfw.Terminate()
 }
 
-func initWindow(width, height int, title string) *glfw.Window {
+func initWindow(width, height int, title string, fullScreen bool) *glfw.Window {
 	glfw.WindowHint(glfw.Resizable, glfw.False)
 	glfw.WindowHint(glfw.ContextVersionMajor, OpenGLMajorVersion)
 	glfw.WindowHint(glfw.ContextVersionMinor, OpenGLMinorVersion)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
-
-	window, err := glfw.CreateWindow(width, height, title, glfw.GetPrimaryMonitor(), nil)
+	monitor := glfw.GetPrimaryMonitor()
+	if !fullScreen {
+		monitor = nil
+	}
+	window, err := glfw.CreateWindow(width, height, title, monitor, nil)
 	if err != nil {
 		panic(err)
 	}
