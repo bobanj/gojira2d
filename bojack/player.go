@@ -5,6 +5,7 @@ import (
 	g "github.com/markov/gojira2d/pkg/graphics"
 	"fmt"
 	"github.com/go-gl/glfw/v3.2/glfw"
+	"math"
 )
 
 type Player struct {
@@ -48,14 +49,14 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 
 func (p *Player) Update(scene *Scene) {
 	if p.keyPressed { //&& shouldPress() {
-		p.speed += 0.1
+		if p.speed < 9 {
+			p.speed += 0.1
+		}
 	} else {
 		p.speed /= 2
 	}
-	p.animationSpeed += p.speed
-	//if p.animationSpeed > 12 {
-	//	p.animationSpeed = 12
-	//}
+
+	p.animationSpeed += float32(math.Min(float64(p.speed), 6))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
