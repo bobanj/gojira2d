@@ -7,7 +7,7 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	g "github.com/markov/gojira2d/pkg/graphics"
 	"github.com/markov/gojira2d/pkg/ui"
-	)
+)
 
 var (
 	keyCallbackFunc glfw.KeyCallback
@@ -46,7 +46,7 @@ func main() {
 	defer UnregisterKeyCallback()
 	createUI()
 
-	player := NewPlayer(mgl32.Vec3{15,15,0})
+	player := NewPlayer(mgl32.Vec3{15, 15, 0})
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		if action == glfw.Release {
 			log.Printf("#%d key:", key)
