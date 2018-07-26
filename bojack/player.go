@@ -8,15 +8,15 @@ import (
 )
 
 type Player struct {
-	quad                  *g.Primitive2D
-	speed                 float32
-	key                   glfw.Key
-	keyPressed            bool
-	position              mgl32.Vec3
-	runningSprites        []*g.Texture
-	numberOfFrames        int
-	currentSpritePosition int
-	animationSpeed        float32
+	quad              *g.Primitive2D
+	speed             float32
+	key               glfw.Key
+	keyPressed        bool
+	position          mgl32.Vec3
+	runningSprites    []*g.Texture
+	numberOfFrames    int
+	currentFrameIndex int
+	animationSpeed    float32
 }
 
 func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int, key glfw.Key) *Player {
@@ -37,9 +37,9 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	p.key = key
 	p.position = position
 	p.numberOfFrames = numberOfFrames
-	p.currentSpritePosition = 0
+	p.currentFrameIndex = 0
 	p.quad = g.NewQuadPrimitive(position, mgl32.Vec2{0, 0})
-	p.quad.SetTexture(p.runningSprites[p.currentSpritePosition])
+	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 	p.quad.SetSizeFromTexture()
 	p.quad.SetScale(scale)
 	p.quad.SetAnchorToBottomCenter()
@@ -56,13 +56,13 @@ func (p *Player) Update(scene *Scene) {
 	//if p.animationSpeed > 12 {
 	//	p.animationSpeed = 12
 	//}
-	p.currentSpritePosition = int(p.animationSpeed/10) % p.numberOfFrames
+	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
 	p.position = absPos
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
-	p.quad.SetTexture(p.runningSprites[p.currentSpritePosition])
-	//log.Printf("CURRENT POSITION #%d:", p.currentSpritePosition)
+	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
+	//log.Printf("CURRENT POSITION #%d:", p.currentFrameIndex)
 	scene.UpdatePlayerPos(p.position.X())
 }
 
