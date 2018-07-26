@@ -28,6 +28,7 @@ var (
 	UIContext      *g.Context
 	FpsCounter     *utils.FPSCounter
 	FpsCounterText *ui.Text
+	Time           = glfw.GetTime()
 
 	clearColor g.Color
 )
@@ -116,11 +117,11 @@ func MainLoop(
 	update func(float64),
 	render func(),
 ) {
-	var newTime, oldTime, deltaTime float64
+	var oldTime, deltaTime float64
 	for !window.ShouldClose() {
-		newTime = glfw.GetTime()
-		deltaTime = newTime - oldTime
-		oldTime = newTime
+		Time = glfw.GetTime()
+		deltaTime = Time - oldTime
+		oldTime = Time
 
 		update(deltaTime)
 		FpsCounter.Update(deltaTime, 1)
