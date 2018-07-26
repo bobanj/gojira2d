@@ -17,9 +17,9 @@ func main() {
 	createHud()
 
 	players := []*Player{
-		NewPlayer(mgl32.Vec3{40, 210, 0.001}, mgl32.Vec2{0.15, 0.15}, "bojack", glfw.KeyQ, 3),
-		NewPlayer(mgl32.Vec3{40, 400, 0.002}, mgl32.Vec2{0.17, 0.17}, "todd", glfw.KeyB, 3),
-		NewPlayer(mgl32.Vec3{40, 580, 0.001}, mgl32.Vec2{0.25, 0.25}, "monkey", glfw.KeyP, 3),
+		NewPlayer(mgl32.Vec3{40, 940, 0.03}, mgl32.Vec2{0.35, 0.35}, "bojack", glfw.KeyQ, 3),
+		NewPlayer(mgl32.Vec3{40, 1060, 0.01}, mgl32.Vec2{0.4, 0.4}, "monkey", glfw.KeyP, 3),
+		NewPlayer(mgl32.Vec3{40, 1000, 0.02}, mgl32.Vec2{0.34, 0.34}, "todd", glfw.KeyB, 3),
 	}
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		switch action {
