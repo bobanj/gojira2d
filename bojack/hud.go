@@ -24,20 +24,20 @@ var (
 	buttonPressed    *g.Primitive2D
 	buttonReleased   *g.Primitive2D
 	bars             *list.List
-	sizeInterpolator = float32(245)
+	sizeInterpolator = float32(win.w - 80) / 3
 	barStart         = float32(20)
 	barEnd           = 3*sizeInterpolator
 )
 
 func createHud() {
 	buttonPressed = g.NewQuadPrimitive(
-		mgl32.Vec3{float32(win.w - 54), 30, -1},
+		mgl32.Vec3{float32(win.w - 60), 30, -1},
 		mgl32.Vec2{48, 40},
 	)
 	buttonPressed.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_pressed.png"))
 
 	buttonReleased = g.NewQuadPrimitive(
-		mgl32.Vec3{float32(win.w - 54), 30, -1},
+		mgl32.Vec3{float32(win.w - 60), 30, -1},
 		mgl32.Vec2{48, 40},
 	)
 	buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
