@@ -22,6 +22,10 @@ func main() {
 		NewPlayer(mgl32.Vec3{40, 1000, 0.2}, mgl32.Vec2{0.4, 0.4}, "monkey", 4, glfw.KeyP),
 		NewPlayer(mgl32.Vec3{40, 1060, 0.1}, mgl32.Vec2{0.34, 0.34}, "todd", 4, glfw.KeyB),
 	}
+	zombies := []*Zombie{
+		NewZombie(mgl32.Vec3{40, 940, 0.3}, mgl32.Vec2{0.35, 0.35}, "zombie", 3),
+	}
+
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		switch action {
 		case glfw.Press:
@@ -52,10 +56,17 @@ func main() {
 		for _, player := range players {
 			player.Update(scene)
 		}
+		for _, zombie := range zombies {
+			zombie.Update()
+		}
+
 	}, func() {
 		scene.Draw(app.Context)
 		for _, player := range players {
 			player.Draw(app.Context)
+		}
+		for _, zombie := range zombies {
+			zombie.Draw(app.Context)
 		}
 		drawHud(app.UIContext)
 	})
