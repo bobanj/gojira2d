@@ -17,15 +17,15 @@ func main() {
 	defer UnregisterKeyCallback()
 	createHud()
 
-	player := NewPlayer(mgl32.Vec3{15, 15, 0})
+	player := NewPlayer(mgl32.Vec3{15, 15, 0}, "bojack", 3)
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		if action == glfw.Release {
 			log.Printf("#%d key:", key)
-			player.Update()
 		}
 	})
 	app.MainLoop(func(speed float64) {
 		updateHud()
+		player.Update(0.3)
 	}, func() {
 		player.Draw(app.Context)
 		drawHud(app.UIContext)
