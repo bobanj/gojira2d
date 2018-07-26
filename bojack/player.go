@@ -16,6 +16,7 @@ type Player struct {
 	runningSprites        []*g.Texture
 	numberOfFrames        int
 	currentSpritePosition int
+	animationSpeed        float32
 }
 
 func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int, key glfw.Key) *Player {
@@ -46,12 +47,16 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 }
 
 func (p *Player) Update(scene *Scene) {
-	p.currentSpritePosition = (p.currentSpritePosition + 1) % p.numberOfFrames
 	if p.keyPressed { //&& shouldPress() {
 		p.speed += 0.1
 	} else {
 		p.speed /= 2
 	}
+	p.animationSpeed += p.speed
+	//if p.animationSpeed > 12 {
+	//	p.animationSpeed = 12
+	//}
+	p.currentSpritePosition = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
 	p.position = absPos
