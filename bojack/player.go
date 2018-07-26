@@ -8,6 +8,10 @@ import (
 	"math"
 	)
 
+var (
+	playersStopAtX = float32(550)
+)
+
 type Player struct {
 	quad              *g.Primitive2D
 	speed             float32
@@ -69,9 +73,8 @@ func (p *Player) UpdateIntro(scene *Scene) {
 	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 	scene.UpdatePlayerPos(p.position.X())
 	//log.Printf("%s calc: %f:", p.playerName, p.position.X() + p.offsetXStartLine)
-	if p.position.X() + p.offsetXStartLine >= 800 {
+	if p.position.X() + p.offsetXStartLine >= playersStopAtX {
 		p.canStart = true
-		//scene.ShowAndFadeGoGoGo()
 	}
 }
 

@@ -15,6 +15,7 @@ func main() {
 	defer app.Terminate()
 	defer UnregisterKeyCallback()
 	createHud()
+	createGoGoGo()
 	scene := NewScene()
 
 	players := []*Player{
@@ -71,5 +72,6 @@ func main() {
 			zombie.Draw(app.Context)
 		}
 		drawHud(app.UIContext)
+		drawGoGoGo(app.UIContext, players[2])
 	})
 }

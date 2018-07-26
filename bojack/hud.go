@@ -6,12 +6,12 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"container/list"
 	"math/rand"
+	"github.com/markov/gojira2d/pkg/ui"
 )
 
 type window struct {
 	w, h int
 }
-
 type bar struct {
 	creationTime float32
 	endTime      float32
@@ -20,13 +20,15 @@ type bar struct {
 }
 
 var (
-	win            = window{w: 1920, h: 1080}
-	buttonPressed  *g.Primitive2D
-	buttonReleased *g.Primitive2D
+	win              = window{w: 1920, h: 1080}
+	buttonPressed    *g.Primitive2D
+	buttonReleased   *g.Primitive2D
 	bars             *list.List
-	sizeInterpolator = float32(win.w - 80) / 3
+	sizeInterpolator = float32(win.w-80) / 3
 	barStart         = float32(20)
-	barEnd           = 3*sizeInterpolator
+	barEnd           = 3 * sizeInterpolator
+	gogoTc           *ui.Text
+	gogoTimer        float32
 )
 
 func createHud() {
@@ -42,6 +44,38 @@ func createHud() {
 	)
 	buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 	bars = list.New()
+}
+
+func createGoGoGo() {
+	gogoFont := ui.NewFontFromFiles(
+		"regular",
+		"examples/assets/fonts/roboto-mono-regular.fnt",
+		"examples/assets/fonts/roboto-mono-regular.png",
+	)
+	gogoColor := g.Color{
+		255,
+		0,
+		0,
+		0.9,
+	}
+	gogoTc = ui.NewText(
+		"GO GO GO!!!!",
+		gogoFont,
+		mgl32.Vec3{300, 200, 0.1},
+		mgl32.Vec2{200, 150},
+		gogoColor,
+		mgl32.Vec4{0, 0, 0, -.17},
+	)
+}
+
+func drawGoGoGo(ctx *g.Context, player *Player) {
+	gogoTimer = float32(glfw.GetTime())
+	//if gogoTimer > 8.5 && gogoTimer < 9.5 {
+	//	gogoTc.EnqueueForDrawing(ctx)
+	//}
+	if player.canStart && gogoTimer < 9.8 {
+		gogoTc.EnqueueForDrawing(ctx)
+	}
 }
 
 func updateHud() {
