@@ -17,35 +17,31 @@ func main() {
 	createHud()
 	scene := NewScene()
 
-	playerOne := NewPlayer(mgl32.Vec3{40, 210, 0.1}, mgl32.Vec2{0.15, 0.15}, "bojack", 3, glfw.KeyQ)
-	playerTwo := NewPlayer(mgl32.Vec3{40, 400, 0.2}, mgl32.Vec2{0.17, 0.17}, "todd", 3, glfw.KeyB)
-	playerThree := NewPlayer(mgl32.Vec3{40, 580, 0.3}, mgl32.Vec2{0.25, 0.25}, "monkey", 3, glfw.KeyP)
-
-	//players := []*Player{
-	//	NewPlayer(mgl32.Vec3{40, 940, 0.3}, mgl32.Vec2{0.35, 0.35}, "bojack", glfw.KeyQ, 3),
-	//	NewPlayer(mgl32.Vec3{40, 1000, 0.2}, mgl32.Vec2{0.4, 0.4}, "monkey", glfw.KeyP, 3),
-	//	NewPlayer(mgl32.Vec3{40, 1060, 0.1}, mgl32.Vec2{0.34, 0.34}, "todd", glfw.KeyB, 3),
-	//}
+	players := []*Player{
+		NewPlayer(mgl32.Vec3{40, 940, 0.3}, mgl32.Vec2{0.35, 0.35}, "bojack", 3, glfw.KeyQ),
+		NewPlayer(mgl32.Vec3{40, 1000, 0.2}, mgl32.Vec2{0.4, 0.4}, "monkey", 3, glfw.KeyP),
+		NewPlayer(mgl32.Vec3{40, 1060, 0.1}, mgl32.Vec2{0.34, 0.34}, "todd", 3, glfw.KeyB),
+	}
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		switch action {
 		case glfw.Press:
 			switch key {
-			case playerOne.key:
-				playerOne.keyPressed = true
-			case playerTwo.key:
-				playerTwo.keyPressed = true
-			case playerThree.key:
-				playerThree.keyPressed = true
+			case players[0].key:
+				players[0].keyPressed = true
+			case players[1].key:
+				players[1].keyPressed = true
+			case players[2].key:
+				players[2].keyPressed = true
 			}
 		case glfw.Release:
 
 			switch key {
-			case playerOne.key:
-				playerOne.keyPressed = false
-			case playerTwo.key:
-				playerTwo.keyPressed = false
-			case playerThree.key:
-				playerThree.keyPressed = false
+			case players[0].key:
+				players[0].keyPressed = false
+			case players[1].key:
+				players[1].keyPressed = false
+			case players[2].key:
+				players[2].keyPressed = false
 			}
 		}
 	})
@@ -53,14 +49,14 @@ func main() {
 	app.MainLoop(func(speed float64) {
 		scene.Update(speed)
 		updateHud()
-		playerOne.Update()
-		playerTwo.Update()
-		playerThree.Update()
+		for _, player := range players {
+			player.Update()
+		}
 	}, func() {
 		scene.Draw(app.Context)
-		playerOne.Draw(app.Context)
-		playerTwo.Draw(app.Context)
-		playerThree.Draw(app.Context)
+		for _, player := range players {
+			player.Draw(app.Context)
+		}
 		drawHud(app.UIContext)
 	})
 }
