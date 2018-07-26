@@ -17,29 +17,29 @@ func main() {
 	defer UnregisterKeyCallback()
 	createHud()
 
-	//players := make([]*Player, 0, 32)
-	playerOne := NewPlayer(mgl32.Vec3{40, 110, 0}, mgl32.Vec2{0.15, 0.15}, "bojack", 3)
-	playerTwo := NewPlayer(mgl32.Vec3{40, 300, 0}, mgl32.Vec2{0.17, 0.17}, "todd", 3)
-	playerThree := NewPlayer(mgl32.Vec3{40, 480, 0}, mgl32.Vec2{0.25, 0.25}, "monkey", 3)
+	players := make([]*Player, 0, 32)
+	players = append(players,  NewPlayer(mgl32.Vec3{40, 210, 0.001}, mgl32.Vec2{0.15, 0.15}, "bojack", 3))
+	players = append(players,  NewPlayer(mgl32.Vec3{40, 400, 0.002}, mgl32.Vec2{0.17, 0.17}, "todd", 3))
+	players = append(players,  NewPlayer(mgl32.Vec3{40, 580, 0.001}, mgl32.Vec2{0.25, 0.25}, "monkey", 3))
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		if action == glfw.Release {
 			log.Printf("#%d key:", key)
 		}
 	})
-
 	scene := NewScene()
 
+	playerSpeed := float32(0.4)
 	app.MainLoop(func(speed float64) {
-		updateHud()
-		playerOne.Update(0.2)
-		playerTwo.Update(0.3)
-		playerThree.Update(0.4)
 		scene.Update(speed)
+		updateHud()
+		for _, player := range players {
+			player.Update(playerSpeed)
+		}
 	}, func() {
 		scene.Draw(app.Context)
-		playerOne.Draw(app.Context)
-		playerTwo.Draw(app.Context)
-		playerThree.Draw(app.Context)
+		for _, player := range players {
+			player.Draw(app.Context)
+		}
 		drawHud(app.UIContext)
 	})
 }
