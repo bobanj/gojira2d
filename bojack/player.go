@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"math"
-)
+	)
 
 type Player struct {
 	quad              *g.Primitive2D
@@ -18,11 +18,22 @@ type Player struct {
 	numberOfFrames    int
 	currentFrameIndex int
 	animationSpeed    float32
+	canStart          bool
+	offsetXStartLine float32
+	playerName string
 }
 
-func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int, key glfw.Key) *Player {
+func NewPlayer(
+	position mgl32.Vec3,
+	scale mgl32.Vec2,
+	playerName string,
+	numberOfFrames int,
+	key glfw.Key,
+	offsetXStartLine float32) *Player {
 	p := &Player{}
-	p.runningSprites = make([]*g.Texture, 0, numberOfFrames + 1)
+	p.canStart = false
+	p.offsetXStartLine = offsetXStartLine
+	p.runningSprites = make([]*g.Texture, 0, numberOfFrames+1)
 	for i := 0; i < numberOfFrames; i++ {
 		var spriteNumber string
 		if i < 10 {
@@ -35,6 +46,7 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%s.png", playerName, playerName, spriteNumber)))
 
 	}
+	p.playerName = playerName
 	p.key = key
 	p.position = position
 	p.numberOfFrames = numberOfFrames
@@ -47,8 +59,33 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	return p
 }
 
+func (p *Player) UpdateIntro(scene *Scene) {
+	p.animationSpeed += float32(math.Min(float64(p.speed), 6))
+	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
+	absPos := p.position
+	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
+	p.position = absPos
+	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
+	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
+	scene.UpdatePlayerPos(p.position.X())
+	//log.Printf("%s calc: %f:", p.playerName, p.position.X() + p.offsetXStartLine)
+	if p.position.X() + p.offsetXStartLine >= 800 {
+		p.canStart = true
+		//scene.ShowAndFadeGoGoGo()
+	}
+}
+
 func (p *Player) Update(scene *Scene) {
-	if p.keyPressed { //&& shouldPress() {
+	if !p.canStart {
+		p.speed = 1.9
+		p.UpdateIntro(scene)
+	} else {
+		p.RunRunRun(scene)
+	}
+}
+
+func (p *Player) RunRunRun(scene *Scene) {
+	if p.keyPressed {
 		if p.speed < 9 {
 			p.speed += 0.1
 		}

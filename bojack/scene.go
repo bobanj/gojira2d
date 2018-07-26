@@ -3,7 +3,10 @@ package main
 import (
 	"github.com/go-gl/mathgl/mgl32"
 	g "github.com/markov/gojira2d/pkg/graphics"
-)
+	"github.com/markov/gojira2d/pkg/ui"
+	"math/rand"
+	"fmt"
+	)
 
 type Scene struct {
 	position mgl32.Vec3
@@ -32,6 +35,29 @@ func (p *Scene)UpdatePlayerPos(x float32) {
 	if x > p.x + 1600 {
 		p.x = x - 1600
 	}
+}
+
+func (p *Scene)ShowAndFadeGoGoGo() {
+	font := ui.NewFontFromFiles(
+		"regular",
+		"examples/assets/fonts/roboto-regular.fnt",
+		"examples/assets/fonts/roboto-regular.png",
+	)
+	color := g.Color{
+		rand.Float32(),
+		rand.Float32(),
+		rand.Float32(),
+		0.6 + 0.4*rand.Float32(),
+	}
+	tc := ui.NewText(
+		"The quick brown fox jumps over the lazy dog",
+		font,
+		mgl32.Vec3{0, 0 + 30, 0},
+		mgl32.Vec2{10, 30},
+		color,
+		mgl32.Vec4{0, 0, 0, -.17},
+	)
+	tc.SetText(fmt.Sprintf("GO GO GO"))
 }
 
 func (p *Scene) Draw(ctx *g.Context)  {
