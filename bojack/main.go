@@ -26,12 +26,17 @@ func main() {
 			log.Printf("#%d key:", key)
 		}
 	})
+
+	scene := NewScene()
+
 	app.MainLoop(func(speed float64) {
 		updateHud()
 		playerOne.Update(0.2)
 		playerTwo.Update(0.3)
 		playerThree.Update(0.4)
+		scene.Update(speed)
 	}, func() {
+		scene.Draw(app.Context)
 		playerOne.Draw(app.Context)
 		playerTwo.Draw(app.Context)
 		playerThree.Draw(app.Context)

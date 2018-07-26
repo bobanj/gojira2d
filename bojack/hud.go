@@ -11,7 +11,7 @@ type window struct {
 }
 
 var (
-	win            = window{w: 800, h: 600}
+	win            = window{w: 1920, h: 1080}
 	buttonPressed  *g.Primitive2D
 	buttonReleased *g.Primitive2D
 )
