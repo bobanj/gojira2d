@@ -4,7 +4,7 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 	g "github.com/markov/gojira2d/pkg/graphics"
 	"fmt"
-)
+	)
 
 type Player struct {
 	quad                  *g.Primitive2D
@@ -16,7 +16,7 @@ type Player struct {
 
 func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int) *Player {
 	p := &Player{}
-	p.runningSprites = make([]*g.Texture, 0, numberOfFrames)
+	p.runningSprites = make([]*g.Texture, 0, numberOfFrames + 1)
 	for i := 0; i <= numberOfFrames; i++ {
 		var spriteNumber string
 		if i < 10 {
@@ -30,6 +30,7 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 
 	}
 	p.position = position
+	p.numberOfFrames = numberOfFrames
 	p.currentSpritePosition = 0
 	p.quad = g.NewQuadPrimitive(position, mgl32.Vec2{0, 0})
 	p.quad.SetTexture(p.runningSprites[p.currentSpritePosition])
@@ -40,7 +41,7 @@ func NewPlayer(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 }
 
 func (p *Player) Update(playerSpeed float32) {
-	if p.currentSpritePosition > p.numberOfFrames {
+	if p.currentSpritePosition >= p.numberOfFrames {
 		p.currentSpritePosition = 0
 	} else {
 		p.currentSpritePosition = p.currentSpritePosition + 1
@@ -50,6 +51,7 @@ func (p *Player) Update(playerSpeed float32) {
 	p.position = absPos
 	p.quad.SetPosition(p.position)
 	p.quad.SetTexture(p.runningSprites[p.currentSpritePosition])
+	//log.Printf("CURRENT POSITION #%d:", p.currentSpritePosition)
 }
 
 func (p *Player) Draw(ctx *g.Context) {

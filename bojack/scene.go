@@ -6,14 +6,14 @@ import (
 )
 
 type Scene struct {
-	position              mgl32.Vec3
-	quad                  *g.Primitive2D
-	x float32
+	position mgl32.Vec3
+	quad     *g.Primitive2D
+	x        float32
 }
 
 func NewScene() *Scene {
 	p := &Scene{}
-	p.quad = g.NewQuadPrimitive(mgl32.Vec3{0,0, 0.4}, mgl32.Vec2{0, 0})
+	p.quad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.4}, mgl32.Vec2{0, 0})
 	p.quad.SetAnchorToCenter()
 	t := g.NewTextureFromFile("bojack/sprites/bg/background.png")
 	p.quad.SetTexture(t)
@@ -22,7 +22,7 @@ func NewScene() *Scene {
 }
 
 func (p *Scene) Update(speed float64) {
-	p.x = p.x+2
+	p.x = p.x + 2
 	p.quad.SetPosition(mgl32.Vec3{-p.x, 0, 0.4})
 }
 
