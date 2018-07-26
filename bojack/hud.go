@@ -95,6 +95,15 @@ func updateHud() {
 	}
 }
 
+func shouldPress() bool {
+	if bars.Len() == 0 {
+		return false
+	}
+	lastBar := bars.Back().Value.(bar)
+	endTime := float32(glfw.GetTime()) - 3
+	return lastBar.creationTime < endTime && lastBar.endTime > endTime
+}
+
 func drawHud(ctx *g.Context) {
 	if bars.Back() == nil {
 		buttonReleased.EnqueueForDrawing(ctx)
@@ -104,10 +113,7 @@ func drawHud(ctx *g.Context) {
 		e.Value.(bar).quad.EnqueueForDrawing(ctx)
 	}
 
-	lastBar := bars.Back().Value.(bar)
-	endTime := float32(glfw.GetTime()) - 3
-
-	if lastBar.creationTime < endTime && lastBar.endTime > endTime {
+	if shouldPress() {
 		buttonPressed.EnqueueForDrawing(ctx)
 	} else {
 		buttonReleased.EnqueueForDrawing(ctx)
