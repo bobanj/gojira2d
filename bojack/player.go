@@ -93,7 +93,7 @@ func (p *Player) RunRunRun(scene *Scene) {
 		p.speed /= 2
 	}
 
-	p.animationSpeed += float32(math.Min(float64(p.speed), 6))
+	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})

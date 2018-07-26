@@ -59,7 +59,7 @@ func main() {
 			player.Update(scene)
 		}
 		for _, zombie := range zombies {
-			zombie.Update()
+			zombie.Update(scene)
 		}
 
 	}, func() {
