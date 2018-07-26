@@ -103,8 +103,7 @@ func GetWindow() *glfw.Window {
 
 // Clear clears the screen using App.clearColor
 func Clear() {
-	gl.ClearColor(
-		clearColor[0], clearColor[1], clearColor[2], clearColor[3])
+	gl.ClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3])
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 }
 

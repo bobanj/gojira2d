@@ -184,6 +184,10 @@ const (
         uniform sampler2D tex;
 
         void main() {
+			if(texture(tex, uv_out).a != 1.0f)
+			{
+        		discard;
+    		}
             color = texture(tex, uv_out);
         }
         ` + "\x00"
