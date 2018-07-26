@@ -20,9 +20,9 @@ type bar struct {
 }
 
 var (
-	win              = window{w: 800, h: 600}
-	buttonPressed    *g.Primitive2D
-	buttonReleased   *g.Primitive2D
+	win            = window{w: 1920, h: 1080}
+	buttonPressed  *g.Primitive2D
+	buttonReleased *g.Primitive2D
 	bars             *list.List
 	sizeInterpolator = float32(win.w - 80) / 3
 	barStart         = float32(20)

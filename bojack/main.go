@@ -26,13 +26,17 @@ func main() {
 			log.Printf("#%d key:", key)
 		}
 	})
+	scene := NewScene()
+
 	playerSpeed := float32(0.4)
 	app.MainLoop(func(speed float64) {
+		scene.Update(speed)
 		updateHud()
 		for _, player := range players {
 			player.Update(playerSpeed)
 		}
 	}, func() {
+		scene.Draw(app.Context)
 		for _, player := range players {
 			player.Draw(app.Context)
 		}
