@@ -90,6 +90,10 @@ func (p *Primitive2D) SetAnchorToCenter() {
 	p.SetAnchor(mgl32.Vec2{p.size[0] / 2.0, p.size[1] / 2.0})
 }
 
+func (p *Primitive2D) SetAnchorToBottomCenter() {
+	p.SetAnchor(mgl32.Vec2{p.size[0] / 2.0, p.size[1]})
+}
+
 func (p *Primitive2D) EnqueueForDrawing(context *Context) {
 	context.EnqueueForDrawing(p)
 }
