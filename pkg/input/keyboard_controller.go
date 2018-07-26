@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-gl/glfw/v3.2/glfw"
-	"github.com/maxfish/gojira2d/pkg/app"
+	"github.com/markov/gojira2d/pkg/app"
 )
 
 type KeyboardController struct {

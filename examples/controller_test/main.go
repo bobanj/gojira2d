@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/maxfish/gojira2d/pkg/graphics"
-	"github.com/maxfish/gojira2d/pkg/input"
+	"github.com/markov/gojira2d/pkg/graphics"
+	"github.com/markov/gojira2d/pkg/input"
 
 	"github.com/go-gl/mathgl/mgl32"
-	"github.com/maxfish/gojira2d/pkg/app"
+	"github.com/markov/gojira2d/pkg/app"
 )
 
 func main() {
