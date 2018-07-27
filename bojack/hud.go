@@ -119,6 +119,24 @@ func shouldPress() bool {
 	return lastBar.creationTime < endTime && lastBar.endTime > endTime
 }
 
+func pressOpportunity() bool {
+	if bars.Len() == 0 {
+		return false
+	}
+	lastBar := bars.Back().Value.(bar)
+	endTime := float32(glfw.GetTime()) - 3
+	return mgl32.Abs(lastBar.creationTime-endTime) < 0.1
+}
+
+func releaseOpportunity() bool {
+	if bars.Len() == 0 {
+		return false
+	}
+	lastBar := bars.Back().Value.(bar)
+	endTime := float32(glfw.GetTime()) - 3
+	return mgl32.Abs(lastBar.endTime-endTime) < 0.1
+}
+
 func drawHud(ctx *g.Context) {
 	if bars.Back() == nil {
 		buttonReleased.EnqueueForDrawing(ctx)
