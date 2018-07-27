@@ -32,6 +32,16 @@ func (s *Scene) Update(speed float64) {
 	s.quad.SetPosition(mgl32.Vec3{-s.x, 0, 1.0})
 }
 
+func (s *Scene)ZombiesWin(zombie *Zombie) {
+		zombie.isWinner = true
+		s.winnerQuad.SetTexture(g.NewTextureFromFile(zombie.mugshotTexturePath))
+		s.winnerQuad.SetSizeFromTexture()
+		s.winnerQuad.SetScale(mgl32.Vec2{0.7, 0.7})
+		s.winnerQuad.SetAnchorToCenter()
+		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
+		s.shouldShowWinner = true
+}
+
 func (s *Scene)UpdateZombiePos(zombie *Zombie) {
 	if !s.shouldShowWinner && zombie.position.X() >= s.quad.GetSize().X() {
 		zombie.isWinner = true
