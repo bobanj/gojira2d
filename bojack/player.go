@@ -35,7 +35,8 @@ type Player struct {
 	quad               *g.Primitive2D
 	shadowQuad         *g.Primitive2D
 	speed              float32
-	key                glfw.Key
+	key0               glfw.Key
+	key1               glfw.Key
 	lastKeyInteraction float64
 	position           mgl32.Vec3
 	runningSprites     []*g.Texture
@@ -56,7 +57,7 @@ func NewPlayer(
 	scale mgl32.Vec2,
 	playerName string,
 	numberOfFrames int,
-	key glfw.Key,
+	key0 glfw.Key,
 	offsetXStartLine float32) *Player {
 	p := &Player{}
 	p.canStart = false
@@ -71,7 +72,7 @@ func NewPlayer(
 	p.playerName = playerName
 	p.mugshotTexturePath = fmt.Sprintf("bojack/sprites/mugshots/%s.png", playerName)
 	p.speed = 1.9
-	p.key = key
+	p.key0 = key0
 	p.position = position
 	p.numberOfFrames = numberOfFrames
 	p.currentFrameIndex = 0

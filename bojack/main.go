@@ -11,7 +11,7 @@ var (
 )
 
 func main() {
-	app.Init(win.w, win.h, false, "Run For Your Life!", false)
+	app.Init(win.w, win.h, false, "Run For Your Life!", true)
 	defer app.Terminate()
 	defer UnregisterKeyCallback()
 	createHud()
