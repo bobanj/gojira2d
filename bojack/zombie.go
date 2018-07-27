@@ -16,6 +16,8 @@ type Zombie struct {
 	numberOfFrames        int
 	currentSpritePosition float64
 	animationSpeed        float64
+	mugshotTexturePath	string
+	isWinner	bool
 }
 
 func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int) *Zombie {
@@ -26,6 +28,8 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 			zombie.runningSprites,
 			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%02d.png", playerName, playerName, i)))
 	}
+	zombie.mugshotTexturePath = fmt.Sprintf("bojack/sprites/mugshots/%s.png", playerName)
+	zombie.isWinner = false
 	zombie.speed = 1
 	zombie.position = position
 	zombie.numberOfFrames = numberOfFrames
@@ -59,6 +63,7 @@ func (zombie *Zombie) Update(scene *Scene) {
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
 
 	zombie.speed = 1 + scene.X() * 0.0001
+	scene.UpdateZombiePos(zombie)
 }
 
 func (zombie *Zombie) Draw(ctx *g.Context) {

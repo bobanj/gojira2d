@@ -9,21 +9,25 @@ import (
 )
 
 type Track struct {
-	creationTime     float32
-	endTime          float32
-	quad             *g.Primitive2D
-	bars             *list.List
-	win              window
-	barHeight        float32
-	barStart         float32
-	barEnd           float32
-	sizeInterpolator float32
+	buttonPressed       *g.Primitive2D
+	buttonReleased      *g.Primitive2D
+	creationTime        float32
+	endTime             float32
+	quad                *g.Primitive2D
+	bars                *list.List
+	win                 window
+	barHeight           float32
+	barStart            float32
+	barEnd              float32
+	bottomOffset        float32
+	sizeInterpolator    float32
+	windowOfOpportunity float32
 }
 
 func (track *Track) Update() {
 	time := float32(glfw.GetTime())
-	if track.bars.Len() == 0 || track.bars.Front().Value.(bar).endTime < time-windowOfOpportunity && rand.Int31n(100) > 92 {
-		duration := rand.Float32()*(0.9-windowOfOpportunity) + windowOfOpportunity
+	if track.bars.Len() == 0 || track.bars.Front().Value.(bar).endTime < time-track.windowOfOpportunity && rand.Int31n(100) > 92 {
+		duration := rand.Float32()*(0.9-track.windowOfOpportunity) + track.windowOfOpportunity
 		size := duration * track.sizeInterpolator
 		newBar := bar{
 			time,
@@ -66,15 +70,27 @@ func (track *Track) Update() {
 		})
 		bar.quad.SetPosition(mgl32.Vec3{
 			barX,
-			1080 - track.barHeight,
+			1080 - track.barHeight - track.bottomOffset,
 			0.6,
 		})
 	}
 }
 
-func (track *Track) Draw(ctx *g.Context) {
+func (track *Track) DrawBars(ctx *g.Context) {
 	for e := track.bars.Front(); e != nil; e = e.Next() {
 		e.Value.(bar).quad.EnqueueForDrawing(ctx)
+	}
+}
+func (track *Track) DrawButton(ctx *g.Context) {
+	if track.isEmpty() {
+		track.buttonReleased.EnqueueForDrawing(ctx)
+		return
+	}
+
+	if track.shouldPress() {
+		track.buttonPressed.EnqueueForDrawing(ctx)
+	} else {
+		track.buttonReleased.EnqueueForDrawing(ctx)
 	}
 }
 
@@ -93,7 +109,7 @@ func (track *Track) pressOpportunity() bool {
 	}
 	lastBar := track.bars.Back().Value.(bar)
 	endTime := float32(glfw.GetTime()) - 3
-	return mgl32.Abs(lastBar.creationTime-endTime) < windowOfOpportunity
+	return mgl32.Abs(lastBar.creationTime-endTime) < track.windowOfOpportunity
 }
 
 func (track *Track) releaseOpportunity() bool {
@@ -102,21 +118,35 @@ func (track *Track) releaseOpportunity() bool {
 	}
 	lastBar := track.bars.Back().Value.(bar)
 	endTime := float32(glfw.GetTime()) - 3
-	return mgl32.Abs(lastBar.endTime-endTime) < windowOfOpportunity
+	return mgl32.Abs(lastBar.endTime-endTime) < track.windowOfOpportunity
 }
 
-func (track *Track) isEmpty() bool{
+func (track *Track) isEmpty() bool {
 	return track.bars.Back() == nil
 }
 
-func NewTrack(win window) Track {
+func NewTrack(win window, barHeight float32, bottomOffset float32, windowOfOpportunity float32) Track {
 	track := Track{}
 	track.win = win
 	track.bars = list.New()
 	track.barStart = float32(0)
-	track.barHeight = float32(274)
+	track.barHeight = barHeight
+	track.bottomOffset = bottomOffset
 	track.sizeInterpolator = float32(win.w-80) / 3
 	track.barEnd = 3 * track.sizeInterpolator
+	track.windowOfOpportunity = windowOfOpportunity
+
+	track.buttonPressed = g.NewQuadPrimitive(
+		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40 - bottomOffset, -1},
+		mgl32.Vec2{96, 80},
+	)
+	track.buttonPressed.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_pressed.png"))
+
+	track.buttonReleased = g.NewQuadPrimitive(
+		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40 - bottomOffset, -1},
+		mgl32.Vec2{96, 80},
+	)
+	track.buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 
 	return track
 }

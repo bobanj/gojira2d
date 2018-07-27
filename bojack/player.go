@@ -35,7 +35,8 @@ type Player struct {
 	quad               *g.Primitive2D
 	shadowQuad         *g.Primitive2D
 	speed              float32
-	key                glfw.Key
+	key0               glfw.Key
+	key1               glfw.Key
 	lastKeyInteraction float64
 	position           mgl32.Vec3
 	runningSprites     []*g.Texture
@@ -44,6 +45,7 @@ type Player struct {
 	animationSpeed     float32
 	canStart           bool
 	isDead             bool
+	isWinner           bool
 	offsetXStartLine   float32
 	playerName         string
 	mugshotTexturePath string
@@ -55,7 +57,7 @@ func NewPlayer(
 	scale mgl32.Vec2,
 	playerName string,
 	numberOfFrames int,
-	key glfw.Key,
+	key0 glfw.Key,
 	offsetXStartLine float32) *Player {
 	p := &Player{}
 	p.canStart = false
@@ -70,7 +72,7 @@ func NewPlayer(
 	p.playerName = playerName
 	p.mugshotTexturePath = fmt.Sprintf("bojack/sprites/mugshots/%s.png", playerName)
 	p.speed = 1.9
-	p.key = key
+	p.key0 = key0
 	p.position = position
 	p.numberOfFrames = numberOfFrames
 	p.currentFrameIndex = 0
@@ -108,7 +110,11 @@ func (p *Player) Update(scene *Scene) {
 func (p *Player) updateSprite(scene *Scene) {
 	if p.position.X() < scene.X()+100 && p.canStart == true && !p.isDead {
 		p.position = mgl32.Vec3{scene.X() + 100, p.position.Y(), p.position.Z()}
-		p.speed = 0.8
+		if p.speed < 1 {
+			p.speed = 1
+		}
+	} else if p.isWinner {
+		p.speed = -1.5
 	}
 	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
