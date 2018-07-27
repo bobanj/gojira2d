@@ -6,6 +6,7 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"container/list"
 	"math/rand"
+	"math"
 )
 
 const (
@@ -32,6 +33,7 @@ var (
 	barHeight        = float32(274)
 	barEnd           = 3 * sizeInterpolator
 	gogoQuad         *g.Primitive2D
+	gogoAnim         float64
 
 	FragmentShaderTexture = `
        #version 410 core
@@ -64,10 +66,10 @@ func createHud() {
 }
 
 func createGoGoGo() {
-	gogoQuad = g.NewQuadPrimitive(mgl32.Vec3{600, 310, 0.1}, mgl32.Vec2{0, 0})
-	gogoQuad.SetAnchorToCenter()
+	gogoQuad = g.NewQuadPrimitive(mgl32.Vec3{1920/2, 300, 0.1}, mgl32.Vec2{0, 0})
 	gogoQuad.SetTexture(g.NewTextureFromFile("bojack/sprites/bg/gogogo.png"))
 	gogoQuad.SetSizeFromTexture()
+	gogoQuad.SetAnchorToCenter()
 	gogoQuad.SetScale(mgl32.Vec2{0.7, 0.7})
 }
 
@@ -80,8 +82,8 @@ func drawGoGoGo(ctx *g.Context, player *Player, scene *Scene) {
 
 func updateHud() {
 	time := float32(glfw.GetTime())
-	if bars.Len() == 0 || bars.Front().Value.(bar).endTime < time - windowOfOpportunity && rand.Int31n(100) > 92 {
-		duration := rand.Float32() * (0.9-windowOfOpportunity) + windowOfOpportunity
+	if bars.Len() == 0 || bars.Front().Value.(bar).endTime < time-windowOfOpportunity && rand.Int31n(100) > 92 {
+		duration := rand.Float32()*(0.9-windowOfOpportunity) + windowOfOpportunity
 		size := duration * sizeInterpolator
 		newBar := bar{
 			time,
@@ -128,6 +130,10 @@ func updateHud() {
 			0.6,
 		})
 	}
+	gogoAnim += 0.1
+	gogoScale := 0.5 + float32(math.Abs( math.Sin(gogoAnim/2)/2))
+	gogoQuad.SetScale(mgl32.Vec2{gogoScale, gogoScale})
+
 }
 
 func shouldPress() bool {

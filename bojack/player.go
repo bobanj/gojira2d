@@ -11,6 +11,24 @@ import (
 const (
 	playersStopAtX = float32(550)
 	maxSpeed       = 9
+
+	FragmentShaderPlayerDead = `
+       #version 410 core
+
+       in vec2 uv_out;
+       out vec4 color;
+
+       uniform sampler2D tex;
+
+       void main() {
+			if(texture(tex, uv_out).a != 1.0f)
+			{
+        		discard;
+    		}
+			float grayScale = dot(texture(tex, uv_out).rgb, vec3(0.299, 0.587, 0.114));
+    		color = vec4(grayScale, grayScale, grayScale, 1.0);
+       }
+       ` + "\x00"
 )
 
 type Player struct {
@@ -25,10 +43,11 @@ type Player struct {
 	currentFrameIndex  int
 	animationSpeed     float32
 	canStart           bool
-	isDead           bool
+	isDead             bool
 	offsetXStartLine   float32
 	playerName         string
-	mugshotTexturePath         string
+	mugshotTexturePath string
+	deathShader        *g.ShaderProgram
 }
 
 func NewPlayer(
@@ -66,9 +85,11 @@ func NewPlayer(
 	p.shadowQuad.SetSizeFromTexture()
 	p.shadowQuad.SetScale(mgl32.Vec2{0.8, 0.6})
 	p.shadowQuad.SetAnchorToCenter()
+
+	p.deathShader = g.NewShaderProgram(g.VertexShaderPrimitive2D, "", FragmentShaderPlayerDead)
+
 	return p
 }
-
 
 func (p *Player) Update(scene *Scene) {
 	time := glfw.GetTime()
@@ -85,7 +106,7 @@ func (p *Player) Update(scene *Scene) {
 }
 
 func (p *Player) updateSprite(scene *Scene) {
-	if p.position.X() < scene.X()+100 && p.canStart == true {
+	if p.position.X() < scene.X()+100 && p.canStart == true && !p.isDead {
 		p.position = mgl32.Vec3{scene.X() + 100, p.position.Y(), p.position.Z()}
 		p.speed = 0.8
 	}
@@ -96,12 +117,17 @@ func (p *Player) updateSprite(scene *Scene) {
 	p.position = absPos
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	p.shadowQuad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, -0.05}))
-	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 	scene.UpdatePlayerPos(p)
+	if p.isDead {
+		p.quad.SetShader(p.deathShader)
+		return
+	}
+
+	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 }
 
 func (p *Player) speedUp() {
-	if !p.canStart {
+	if !p.canStart || p.isDead {
 		return
 	}
 	p.speed += 1.5

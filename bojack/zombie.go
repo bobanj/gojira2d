@@ -46,7 +46,7 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 }
 
 func (zombie *Zombie) Update(scene *Scene) {
-	if zombie.position.X() < scene.X()-120 {
+	if zombie.position.X() < scene.X()-120 && scene.X() > 0 {
 		zombie.position = mgl32.Vec3{scene.X() - 120, zombie.position.Y(), zombie.position.Z()}
 	}
 
@@ -57,6 +57,8 @@ func (zombie *Zombie) Update(scene *Scene) {
 	zombie.quad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	zombie.shadowQuad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X() + 40, 0, -0.05}))
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
+
+	zombie.speed = 1 + scene.X() * 0.0001
 }
 
 func (zombie *Zombie) Draw(ctx *g.Context) {
