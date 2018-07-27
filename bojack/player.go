@@ -6,25 +6,25 @@ import (
 	"fmt"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"math"
-	)
+)
 
-var (
+const (
 	playersStopAtX = float32(550)
+	maxSpeed       = 9
 )
 
 type Player struct {
 	quad              *g.Primitive2D
 	speed             float32
 	key               glfw.Key
-	keyPressed        bool
 	position          mgl32.Vec3
 	runningSprites    []*g.Texture
 	numberOfFrames    int
 	currentFrameIndex int
 	animationSpeed    float32
 	canStart          bool
-	offsetXStartLine float32
-	playerName string
+	offsetXStartLine  float32
+	playerName        string
 }
 
 func NewPlayer(
@@ -44,6 +44,7 @@ func NewPlayer(
 			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%02d.png", playerName, playerName, i)))
 	}
 	p.playerName = playerName
+	p.speed = 1.9
 	p.key = key
 	p.position = position
 	p.numberOfFrames = numberOfFrames
@@ -56,37 +57,15 @@ func NewPlayer(
 	return p
 }
 
-func (p *Player) UpdateIntro(scene *Scene) {
-	p.updateSprite(scene)
-	//log.Printf("%s calc: %f:", p.playerName, p.position.X() + p.offsetXStartLine)
-	if p.position.X() >= playersStopAtX {
-		p.canStart = true
-	}
-}
-
 func (p *Player) Update(scene *Scene) {
-	if !p.canStart {
-		p.speed = 1.9
-		p.UpdateIntro(scene)
-	} else {
-		p.RunRunRun(scene)
+	if !p.canStart && p.position.X() >= playersStopAtX {
+		p.canStart = true
+		p.speed = 0
 	}
-}
-
-func (p *Player) RunRunRun(scene *Scene) {
-	if p.keyPressed {
-		if p.speed < 9 {
-			p.speed += 0.1
-		}
-	} else {
-		p.speed /= 2
-	}
-
 	p.updateSprite(scene)
-	//log.Printf("CURRENT POSITION #%d:", p.currentFrameIndex)
 }
 
-func (p *Player)updateSprite(scene *Scene) {
+func (p *Player) updateSprite(scene *Scene) {
 	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
@@ -95,6 +74,17 @@ func (p *Player)updateSprite(scene *Scene) {
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 	scene.UpdatePlayerPos(p.position.X())
+}
+
+func speedUp(p *Player) {
+	p.speed += 0.1
+	if p.speed > maxSpeed {
+		p.speed = maxSpeed
+	}
+}
+
+func slowDown(p *Player) {
+	p.speed *= 0.9
 }
 
 func (p *Player) Draw(ctx *g.Context) {
