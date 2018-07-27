@@ -60,6 +60,6 @@ func (zombie *Zombie) Update(scene *Scene) {
 }
 
 func (zombie *Zombie) Draw(ctx *g.Context) {
-	zombie.shadowQuad.EnqueueForDrawing(ctx)
-	zombie.quad.EnqueueForDrawing(ctx)
+	zombie.shadowQuad.Draw(ctx)
+	zombie.quad.Draw(ctx)
 }

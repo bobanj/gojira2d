@@ -47,9 +47,9 @@ func (p *Scene)UpdatePlayerPos(player *Player) {
 }
 
 func (p *Scene) Draw(ctx *g.Context)  {
-	p.quad.EnqueueForDrawing(ctx)
+	p.quad.Draw(ctx)
 	if p.shouldShowWinner {
-		p.winnerQuad.EnqueueForDrawing(ctx)
+		p.winnerQuad.Draw(ctx)
 	}
 }
 

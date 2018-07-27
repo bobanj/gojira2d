@@ -115,6 +115,6 @@ func (p *Player) slowDown() {
 }
 
 func (p *Player) Draw(ctx *g.Context) {
-	p.quad.EnqueueForDrawing(ctx)
-	p.shadowQuad.EnqueueForDrawing(ctx)
+	p.quad.Draw(ctx)
+	p.shadowQuad.Draw(ctx)
 }
