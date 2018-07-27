@@ -20,7 +20,7 @@ func main() {
 
 	players := []*Player{
 		NewPlayer(
-			mgl32.Vec3{-200, 940, 0.3},
+			mgl32.Vec3{-200, 900, 0.3},
 			mgl32.Vec2{0.35, 0.35},
 			"bojack",
 			4,
@@ -28,7 +28,7 @@ func main() {
 			0,
 			),
 		NewPlayer(
-			mgl32.Vec3{-350, 1000, 0.2},
+			mgl32.Vec3{-350, 980, 0.2},
 			mgl32.Vec2{0.4, 0.4},
 			"monkey",
 			4,
@@ -36,7 +36,7 @@ func main() {
 			150,
 			),
 		NewPlayer(
-			mgl32.Vec3{-500, 1060, 0.1},
+			mgl32.Vec3{-500, 1040, 0.1},
 			mgl32.Vec2{0.34, 0.34},
 			"todd",
 			4,

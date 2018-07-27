@@ -15,6 +15,7 @@ const (
 
 type Player struct {
 	quad              *g.Primitive2D
+	shadowQuad        *g.Primitive2D
 	speed             float32
 	key               glfw.Key
 	position          mgl32.Vec3
@@ -54,6 +55,12 @@ func NewPlayer(
 	p.quad.SetSizeFromTexture()
 	p.quad.SetScale(scale)
 	p.quad.SetAnchorToBottomCenter()
+
+	p.shadowQuad = g.NewQuadPrimitive(position, mgl32.Vec2{0, 0})
+	p.shadowQuad.SetTexture(g.NewTextureFromFile("bojack/sprites/shadow.png"))
+	p.shadowQuad.SetSizeFromTexture()
+	p.shadowQuad.SetScale(mgl32.Vec2{0.8, 0.6})
+	p.shadowQuad.SetAnchorToCenter()
 	return p
 }
 
@@ -66,12 +73,17 @@ func (p *Player) Update(scene *Scene) {
 }
 
 func (p *Player) updateSprite(scene *Scene) {
+	if p.position.X() < scene.X()+100 && p.canStart == true {
+		p.position = mgl32.Vec3{scene.X() + 100, p.position.Y(), p.position.Z()}
+		p.speed = 0.8
+	}
 	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
 	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
 	p.position = absPos
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
+	p.shadowQuad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, -0.05}))
 	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
 	scene.UpdatePlayerPos(p.position.X())
 }
@@ -89,4 +101,5 @@ func slowDown(p *Player) {
 
 func (p *Player) Draw(ctx *g.Context) {
 	p.quad.EnqueueForDrawing(ctx)
+	p.shadowQuad.EnqueueForDrawing(ctx)
 }
