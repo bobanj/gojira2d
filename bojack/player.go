@@ -39,16 +39,9 @@ func NewPlayer(
 	p.offsetXStartLine = offsetXStartLine
 	p.runningSprites = make([]*g.Texture, 0, numberOfFrames+1)
 	for i := 0; i < numberOfFrames; i++ {
-		var spriteNumber string
-		if i < 10 {
-			spriteNumber = fmt.Sprintf("0%d", i)
-		} else {
-			spriteNumber = fmt.Sprintf("%d", i)
-		}
 		p.runningSprites = append(
 			p.runningSprites,
-			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%s.png", playerName, playerName, spriteNumber)))
-
+			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%02d.png", playerName, playerName, i)))
 	}
 	p.playerName = playerName
 	p.key = key
@@ -66,7 +59,7 @@ func NewPlayer(
 func (p *Player) UpdateIntro(scene *Scene) {
 	p.updateSprite(scene)
 	//log.Printf("%s calc: %f:", p.playerName, p.position.X() + p.offsetXStartLine)
-	if p.position.X() + p.offsetXStartLine >= playersStopAtX {
+	if p.position.X() >= playersStopAtX {
 		p.canStart = true
 	}
 }

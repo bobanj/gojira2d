@@ -21,16 +21,9 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	zombie := &Zombie{}
 	zombie.runningSprites = make([]*g.Texture, 0, numberOfFrames+1)
 	for i := 0; i < numberOfFrames; i++ {
-		var spriteNumber string
-		if i < 10 {
-			spriteNumber = fmt.Sprintf("0%d", i)
-		} else {
-			spriteNumber = fmt.Sprintf("%d", i)
-		}
 		zombie.runningSprites = append(
 			zombie.runningSprites,
-			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%s.png", playerName, playerName, spriteNumber)))
-
+			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%02d.png", playerName, playerName, i)))
 	}
 	zombie.speed = 1
 	zombie.position = position
