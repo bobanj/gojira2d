@@ -29,7 +29,7 @@ func (p *Scene) Update(speed float64) {
 	if p.x + 1920 >= 8884 {
 		p.x = 8884 - 1920
 	}
-	p.quad.SetPosition(mgl32.Vec3{-p.x, 0, 0.4})
+	p.quad.SetPosition(mgl32.Vec3{-p.x, 0, 1.0})
 }
 
 func (p *Scene)UpdatePlayerPos(player *Player) {

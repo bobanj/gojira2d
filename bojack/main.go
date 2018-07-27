@@ -67,6 +67,7 @@ func main() {
 		}
 	}, func() {
 		scene.Draw(app.Context)
+		drawBars(app.Context)
 		for _, player := range players {
 			player.Draw(app.Context)
 		}
