@@ -25,6 +25,7 @@ type Player struct {
 	currentFrameIndex  int
 	animationSpeed     float32
 	canStart           bool
+	isDead           bool
 	offsetXStartLine   float32
 	playerName         string
 	mugshotTexturePath         string
@@ -39,6 +40,7 @@ func NewPlayer(
 	offsetXStartLine float32) *Player {
 	p := &Player{}
 	p.canStart = false
+	p.isDead = false
 	p.offsetXStartLine = offsetXStartLine
 	p.runningSprites = make([]*g.Texture, 0, numberOfFrames+1)
 	for i := 0; i < numberOfFrames; i++ {
@@ -66,6 +68,7 @@ func NewPlayer(
 	p.shadowQuad.SetAnchorToCenter()
 	return p
 }
+
 
 func (p *Player) Update(scene *Scene) {
 	time := glfw.GetTime()

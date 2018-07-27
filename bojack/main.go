@@ -56,13 +56,15 @@ func main() {
 	app.MainLoop(func(speed float64) {
 		scene.Update(speed)
 		updateHud()
-		for _, player := range players {
-			player.Update(scene)
-		}
 		for _, zombie := range zombies {
 			zombie.Update(scene)
 		}
-
+		for _, player := range players {
+			player.Update(scene)
+			if zombies[0].position.X() >= player.position.X() || zombies[1].position.X() >= player.position.X() {
+				player.isDead = true
+			}
+		}
 	}, func() {
 		scene.Draw(app.Context)
 		for _, player := range players {
