@@ -24,7 +24,7 @@ func main() {
 			mgl32.Vec2{0.35, 0.35},
 			"bojack",
 			4,
-			glfw.KeyQ,
+			glfw.KeyB,
 			0,
 			),
 		NewPlayer(
@@ -32,7 +32,7 @@ func main() {
 			mgl32.Vec2{0.4, 0.4},
 			"monkey",
 			4,
-			glfw.KeyP,
+			glfw.KeyM,
 			150,
 			),
 		NewPlayer(
@@ -40,7 +40,7 @@ func main() {
 			mgl32.Vec2{0.34, 0.34},
 			"todd",
 			4,
-			glfw.KeyB,
+			glfw.KeyT,
 			300,
 			),
 	}
@@ -67,6 +67,7 @@ func main() {
 		}
 	}, func() {
 		scene.Draw(app.Context)
+		drawBars(app.Context)
 		for _, player := range players {
 			player.Draw(app.Context)
 		}

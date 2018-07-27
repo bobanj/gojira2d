@@ -29,22 +29,37 @@ var (
 	buttonReleased   *g.Primitive2D
 	bars             *list.List
 	sizeInterpolator = float32(win.w-80) / 3
-	barStart         = float32(20)
+	barStart         = float32(0)
+	barHeight        = float32(274)
 	barEnd           = 3 * sizeInterpolator
 	gogoQuad         *g.Primitive2D
 	gogoAnim         float64
+
+	FragmentShaderTexture = `
+       #version 410 core
+
+       in vec2 uv_out;
+       out vec4 color;
+
+       uniform sampler2D tex;
+
+       void main() {
+           color = texture(tex, uv_out);
+            color.a = color.a * 0.5;
+       }
+       ` + "\x00"
 )
 
 func createHud() {
 	buttonPressed = g.NewQuadPrimitive(
-		mgl32.Vec3{float32(win.w - 60), 30, -1},
-		mgl32.Vec2{48, 40},
+		mgl32.Vec3{barEnd - 48, 1080 - barHeight/2 - 40, -1},
+		mgl32.Vec2{96, 80},
 	)
 	buttonPressed.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_pressed.png"))
 
 	buttonReleased = g.NewQuadPrimitive(
-		mgl32.Vec3{float32(win.w - 60), 30, -1},
-		mgl32.Vec2{48, 40},
+		mgl32.Vec3{barEnd - 48, 1080 - barHeight/2 - 40, -1},
+		mgl32.Vec2{96, 80},
 	)
 	buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 	bars = list.New()
@@ -75,11 +90,12 @@ func updateHud() {
 			time + duration,
 			size,
 			g.NewQuadPrimitive(
-				mgl32.Vec3{0, 10, -1},
-				mgl32.Vec2{size, 60},
+				mgl32.Vec3{0, 10, 0.6},
+				mgl32.Vec2{size, barHeight},
 			),
 		}
 		newBar.quad.SetTexture(g.NewTextureFromFile("bojack/sprites/colors/blue.png"))
+		newBar.quad.SetShader(g.NewShaderProgram(g.VertexShaderPrimitive2D, "", FragmentShaderTexture))
 		bars.PushFront(newBar)
 	}
 
@@ -106,12 +122,12 @@ func updateHud() {
 		}
 		bar.quad.SetSize(mgl32.Vec2{
 			barWidth,
-			60,
+			barHeight,
 		})
 		bar.quad.SetPosition(mgl32.Vec3{
 			barX,
-			10,
-			-1,
+			1080 - barHeight,
+			0.6,
 		})
 	}
 	gogoAnim += 0.1
@@ -152,13 +168,16 @@ func drawHud(ctx *g.Context) {
 		buttonReleased.EnqueueForDrawing(ctx)
 		return
 	}
-	for e := bars.Front(); e != nil; e = e.Next() {
-		e.Value.(bar).quad.EnqueueForDrawing(ctx)
-	}
 
 	if shouldPress() {
 		buttonPressed.EnqueueForDrawing(ctx)
 	} else {
 		buttonReleased.EnqueueForDrawing(ctx)
+	}
+}
+
+func drawBars(ctx *g.Context) {
+	for e := bars.Front(); e != nil; e = e.Next() {
+		e.Value.(bar).quad.EnqueueForDrawing(ctx)
 	}
 }
