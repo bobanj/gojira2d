@@ -62,7 +62,7 @@ func (zombie *Zombie) Update(scene *Scene) {
 	zombie.shadowQuad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X() + 40, 0, -0.05}))
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
 
-	zombie.speed = 1 + scene.X() * 0.0001
+	zombie.speed = 1 + scene.X() * 0.000475
 	scene.UpdateZombiePos(zombie)
 }
 

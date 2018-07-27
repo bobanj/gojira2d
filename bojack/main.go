@@ -62,7 +62,7 @@ func main() {
 		for _, player := range players {
 			player.Update(scene)
 			if scene.X() >0 && (zombies[0].position.X()+100 >= player.position.X() || zombies[1].position.X()+100 >= player.position.X()) {
-				player.isDead = true
+				player.isDead = !player.isWinner
 			}
 		}
 	}, func() {
