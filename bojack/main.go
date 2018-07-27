@@ -45,8 +45,8 @@ func main() {
 			),
 	}
 	zombies := []*Zombie{
-		NewZombie(mgl32.Vec3{-700, 970, 0.310}, mgl32.Vec2{0.33, 0.33}, "zombie", 3),
-		NewZombie(mgl32.Vec3{-850, 1030, 0.311}, mgl32.Vec2{0.32, 0.32}, "other_zombie", 3),
+		NewZombie(mgl32.Vec3{-700, 970, 0.25}, mgl32.Vec2{0.33, 0.33}, "zombie", 3),
+		NewZombie(mgl32.Vec3{-850, 1030, 0.15}, mgl32.Vec2{0.32, 0.32}, "other_zombie", 3),
 	}
 
 	RegisterKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
