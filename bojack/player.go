@@ -75,7 +75,7 @@ func (p *Player) Update(scene *Scene) {
 			p.speed = 0
 		}
 	} else if p.lastKeyInteraction+1 < time {
-		slowDown(p)
+		p.slowDown()
 		p.lastKeyInteraction = time
 	}
 	p.updateSprite(scene)
@@ -97,14 +97,14 @@ func (p *Player) updateSprite(scene *Scene) {
 	scene.UpdatePlayerPos(p)
 }
 
-func speedUp(p *Player) {
-	p.speed += 5
+func (p *Player) speedUp() {
+	p.speed += 1.5
 	if p.speed > maxSpeed {
 		p.speed = maxSpeed
 	}
 }
 
-func slowDown(p *Player) {
+func (p *Player) slowDown() {
 	p.speed *= 0.75
 }
 

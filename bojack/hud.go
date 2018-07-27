@@ -8,6 +8,8 @@ import (
 	"math/rand"
 		)
 
+const windowOfOpportunity = 0.2
+
 type window struct {
 	w, h int
 }
@@ -125,7 +127,7 @@ func pressOpportunity() bool {
 	}
 	lastBar := bars.Back().Value.(bar)
 	endTime := float32(glfw.GetTime()) - 3
-	return mgl32.Abs(lastBar.creationTime-endTime) < 0.1
+	return mgl32.Abs(lastBar.creationTime-endTime) < windowOfOpportunity
 }
 
 func releaseOpportunity() bool {
@@ -134,7 +136,7 @@ func releaseOpportunity() bool {
 	}
 	lastBar := bars.Back().Value.(bar)
 	endTime := float32(glfw.GetTime()) - 3
-	return mgl32.Abs(lastBar.endTime-endTime) < 0.2
+	return mgl32.Abs(lastBar.endTime-endTime) < windowOfOpportunity
 }
 
 func drawHud(ctx *g.Context) {
