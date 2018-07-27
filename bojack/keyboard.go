@@ -31,21 +31,21 @@ func HandleKeyPress(key glfw.Key, action glfw.Action, players []*Player) {
 			return
 		}
 		for _, p := range players {
-			if key == p.key {
+			if key == p.key0 {
 				p.lastKeyInteraction = glfw.GetTime()
-				if pressOpportunity() {
+				if track0.pressOpportunity() {
 					if keyPressed {
 						p.speedUp()
 					} else {
 						p.slowDown()
 					}
-				} else if releaseOpportunity() {
+				} else if track0.releaseOpportunity() {
 					if keyPressed {
 						p.slowDown()
 					} else {
 						p.speedUp()
 					}
-				} else if shouldPress() != keyPressed {
+				} else if track0.shouldPress() != keyPressed {
 					p.slowDown()
 				}
 			}

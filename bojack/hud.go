@@ -17,10 +17,10 @@ type bar struct {
 }
 
 var (
-	win      = window{w: 1920, h: 1080}
+	win                  = window{w: 1920, h: 1080}
 	gogoQuad *g.Primitive2D
 	gogoAnim float64
-	track    Track
+	track0   Track
 
 	FragmentShaderTexture = `
        #version 410 core
@@ -38,7 +38,7 @@ var (
 )
 
 func createHud() {
-	track = NewTrack(win)
+	track0 = NewTrack(win, 274.0, 0, 0.2)
 }
 
 func createGoGoGo() {
@@ -56,28 +56,16 @@ func drawGoGoGo(ctx *g.Context, player *Player, scene *Scene) {
 }
 
 func updateHud() {
-	track.Update()
+	track0.Update()
 	gogoAnim += 0.1
 	gogoScale := 0.5 + float32(math.Abs(math.Sin(gogoAnim/2)/2))
 	gogoQuad.SetScale(mgl32.Vec2{gogoScale, gogoScale})
 }
 
-func shouldPress() bool {
-	return track.shouldPress()
-}
-
-func pressOpportunity() bool {
-	return track.pressOpportunity()
-}
-
-func releaseOpportunity() bool {
-	return track.releaseOpportunity()
-}
-
 func drawHud(ctx *g.Context) {
-	track.DrawButton(ctx)
+	track0.DrawButton(ctx)
 }
 
 func drawBars(ctx *g.Context) {
-	track.Draw(ctx)
+	track0.DrawBars(ctx)
 }
