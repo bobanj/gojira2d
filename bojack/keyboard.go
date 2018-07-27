@@ -31,6 +31,7 @@ func HandleKeyPress(key glfw.Key, action glfw.Action, players []*Player) {
 	}
 	for _, p := range players {
 		if key == p.key {
+			p.lastKeyInteraction = glfw.GetTime()
 			if pressOpportunity() {
 				if keyPressed {
 					speedUp(p)

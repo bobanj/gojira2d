@@ -14,18 +14,19 @@ const (
 )
 
 type Player struct {
-	quad              *g.Primitive2D
-	shadowQuad        *g.Primitive2D
-	speed             float32
-	key               glfw.Key
-	position          mgl32.Vec3
-	runningSprites    []*g.Texture
-	numberOfFrames    int
-	currentFrameIndex int
-	animationSpeed    float32
-	canStart          bool
-	offsetXStartLine  float32
-	playerName        string
+	quad               *g.Primitive2D
+	shadowQuad         *g.Primitive2D
+	speed              float32
+	key                glfw.Key
+	lastKeyInteraction float64
+	position           mgl32.Vec3
+	runningSprites     []*g.Texture
+	numberOfFrames     int
+	currentFrameIndex  int
+	animationSpeed     float32
+	canStart           bool
+	offsetXStartLine   float32
+	playerName         string
 }
 
 func NewPlayer(
@@ -65,9 +66,15 @@ func NewPlayer(
 }
 
 func (p *Player) Update(scene *Scene) {
-	if !p.canStart && p.position.X() >= playersStopAtX {
-		p.canStart = true
-		p.speed = 0
+	time := glfw.GetTime()
+	if !p.canStart {
+		if p.position.X() >= playersStopAtX {
+			p.canStart = true
+			p.speed = 0
+		}
+	} else if p.lastKeyInteraction+1 < time {
+		slowDown(p)
+		p.lastKeyInteraction = time
 	}
 	p.updateSprite(scene)
 }
@@ -89,14 +96,14 @@ func (p *Player) updateSprite(scene *Scene) {
 }
 
 func speedUp(p *Player) {
-	p.speed += 0.1
+	p.speed += 0.5
 	if p.speed > maxSpeed {
 		p.speed = maxSpeed
 	}
 }
 
 func slowDown(p *Player) {
-	p.speed *= 0.9
+	p.speed *= 0.75
 }
 
 func (p *Player) Draw(ctx *g.Context) {
