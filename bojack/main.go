@@ -65,6 +65,9 @@ func main() {
 				player.isDead = !player.isWinner
 			}
 		}
+		if players[0].isDead && players[1].isDead && players[2].isDead {
+			scene.ZombiesWin(zombies[0])
+		}
 	}, func() {
 		scene.Draw(app.Context)
 		drawBars(app.Context)
