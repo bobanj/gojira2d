@@ -8,7 +8,9 @@ import (
 	"math/rand"
 		)
 
-const windowOfOpportunity = 0.2
+const (
+	windowOfOpportunity = 0.2
+)
 
 type window struct {
 	w, h int
@@ -63,8 +65,8 @@ func drawGoGoGo(ctx *g.Context, player *Player, scene *Scene) {
 
 func updateHud() {
 	time := float32(glfw.GetTime())
-	if bars.Len() == 0 || bars.Front().Value.(bar).endTime < time && rand.Int31n(100) > 95 {
-		duration := rand.Float32()
+	if bars.Len() == 0 || bars.Front().Value.(bar).endTime < time - windowOfOpportunity && rand.Int31n(100) > 92 {
+		duration := rand.Float32() * (0.9-windowOfOpportunity) + windowOfOpportunity
 		size := duration * sizeInterpolator
 		newBar := bar{
 			time,
