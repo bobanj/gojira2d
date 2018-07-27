@@ -58,6 +58,10 @@ func (p *Primitive2D) SetSize(size mgl32.Vec2) {
 	p.modelMatrix.dirty = true
 }
 
+func (p *Primitive2D) GetSize() mgl32.Vec2 {
+	return p.size
+}
+
 func (p *Primitive2D) SetScale(scale mgl32.Vec2) {
 	p.scale = scale
 	p.rebuildScaleMatrix()

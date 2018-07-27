@@ -134,7 +134,7 @@ func releaseOpportunity() bool {
 	}
 	lastBar := bars.Back().Value.(bar)
 	endTime := float32(glfw.GetTime()) - 3
-	return mgl32.Abs(lastBar.endTime-endTime) < 0.1
+	return mgl32.Abs(lastBar.endTime-endTime) < 0.2
 }
 
 func drawHud(ctx *g.Context) {

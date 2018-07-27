@@ -27,6 +27,7 @@ type Player struct {
 	canStart           bool
 	offsetXStartLine   float32
 	playerName         string
+	mugshotTexturePath         string
 }
 
 func NewPlayer(
@@ -46,6 +47,7 @@ func NewPlayer(
 			g.NewTextureFromFile(fmt.Sprintf("bojack/sprites/%s/%s_%02d.png", playerName, playerName, i)))
 	}
 	p.playerName = playerName
+	p.mugshotTexturePath = fmt.Sprintf("bojack/sprites/mugshots/%s.png", playerName)
 	p.speed = 1.9
 	p.key = key
 	p.position = position
@@ -92,11 +94,11 @@ func (p *Player) updateSprite(scene *Scene) {
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	p.shadowQuad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, -0.05}))
 	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
-	scene.UpdatePlayerPos(p.position.X())
+	scene.UpdatePlayerPos(p)
 }
 
 func speedUp(p *Player) {
-	p.speed += 0.5
+	p.speed += 5
 	if p.speed > maxSpeed {
 		p.speed = maxSpeed
 	}
