@@ -33,10 +33,12 @@ func (p *Scene) Update(speed float64) {
 }
 
 func (p *Scene)UpdatePlayerPos(player *Player) {
-	if player.position.X() >= p.quad.GetSize().X() {
+	if !p.shouldShowWinner && player.position.X() >= p.quad.GetSize().X() {
 		p.winnerQuad.SetTexture(g.NewTextureFromFile(player.mugshotTexturePath))
 		p.winnerQuad.SetSizeFromTexture()
+		p.winnerQuad.SetScale(mgl32.Vec2{0.8, 0.6})
 		p.winnerQuad.SetAnchorToCenter()
+		p.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
 		p.shouldShowWinner = true
 	}
 	if player.position.X() > p.x + 1600 {
