@@ -96,7 +96,7 @@ func (p *Player) updateSprite(scene *Scene) {
 }
 
 func speedUp(p *Player) {
-	p.speed += 0.5
+	p.speed += 1.5
 	if p.speed > maxSpeed {
 		p.speed = maxSpeed
 	}
