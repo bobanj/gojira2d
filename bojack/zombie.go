@@ -39,6 +39,10 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 }
 
 func (zombie *Zombie) Update(scene *Scene)  {
+	if zombie.position.X() < scene.X() - 120 {
+		zombie.position = mgl32.Vec3{scene.X() - 120, zombie.position.Y(), zombie.position.Z()}
+	}
+
 	zombie.currentSpritePosition = math.Mod(zombie.currentSpritePosition+zombie.animationSpeed, float64(zombie.numberOfFrames))
 	absPos := zombie.position
 	absPos = absPos.Add(mgl32.Vec3{zombie.speed, 0, 0})

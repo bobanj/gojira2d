@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"math"
-	)
+)
 
 var (
 	playersStopAtX = float32(550)
@@ -23,8 +23,8 @@ type Player struct {
 	currentFrameIndex int
 	animationSpeed    float32
 	canStart          bool
-	offsetXStartLine float32
-	playerName string
+	offsetXStartLine  float32
+	playerName        string
 }
 
 func NewPlayer(
@@ -86,7 +86,12 @@ func (p *Player) RunRunRun(scene *Scene) {
 	//log.Printf("CURRENT POSITION #%d:", p.currentFrameIndex)
 }
 
-func (p *Player)updateSprite(scene *Scene) {
+func (p *Player) updateSprite(scene *Scene) {
+	if p.position.X() < scene.X() + 100 && p.canStart == true {
+		p.position = mgl32.Vec3{scene.X() + 100, p.position.Y(), p.position.Z()}
+		p.speed = 0.8
+	}
+
 	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
