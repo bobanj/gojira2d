@@ -16,8 +16,8 @@ type Zombie struct {
 	numberOfFrames        int
 	currentSpritePosition float64
 	animationSpeed        float64
-	mugshotTexturePath	string
-	isWinner	bool
+	mugshotTexturePath    string
+	isWinner              bool
 }
 
 func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberOfFrames int) *Zombie {
@@ -62,7 +62,7 @@ func (zombie *Zombie) Update(scene *Scene) {
 	zombie.shadowQuad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X() + 40, 0, -0.05}))
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
 
-	zombie.speed = 1 + scene.X() * 0.000475
+	zombie.speed = 1 + scene.X()*0.000475
 	scene.UpdateZombiePos(zombie)
 }
 

@@ -3,13 +3,13 @@ package main
 import (
 	"github.com/go-gl/mathgl/mgl32"
 	g "github.com/markov/gojira2d/pkg/graphics"
-	)
+)
 
 type Scene struct {
-	position mgl32.Vec3
-	quad     *g.Primitive2D
-	winnerQuad     *g.Primitive2D
-	x        float32
+	position         mgl32.Vec3
+	quad             *g.Primitive2D
+	winnerQuad       *g.Primitive2D
+	x                float32
 	shouldShowWinner bool
 }
 
@@ -26,56 +26,56 @@ func NewScene() *Scene {
 }
 
 func (s *Scene) Update(speed float64) {
-	if s.x + 1920 >= 8884 {
+	if s.x+1920 >= 8884 {
 		s.x = 8884 - 1920
 	}
 	s.quad.SetPosition(mgl32.Vec3{-s.x, 0, 1.0})
 }
 
-func (s *Scene)ZombiesWin(zombie *Zombie) {
-		zombie.isWinner = true
-		s.winnerQuad.SetTexture(g.NewTextureFromFile(zombie.mugshotTexturePath))
-		s.winnerQuad.SetSizeFromTexture()
-		s.winnerQuad.SetScale(mgl32.Vec2{0.7, 0.7})
-		s.winnerQuad.SetAnchorToCenter()
-		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
-		s.shouldShowWinner = true
+func (s *Scene) ZombiesWin(zombie *Zombie) {
+	zombie.isWinner = true
+	s.winnerQuad.SetTexture(g.NewTextureFromFile(zombie.mugshotTexturePath))
+	s.winnerQuad.SetSizeFromTexture()
+	s.winnerQuad.SetScale(mgl32.Vec2{0.7, 0.7})
+	s.winnerQuad.SetAnchorToCenter()
+	s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h) / 2, 0.01})
+	s.shouldShowWinner = true
 }
 
-func (s *Scene)UpdateZombiePos(zombie *Zombie) {
+func (s *Scene) UpdateZombiePos(zombie *Zombie) {
 	if !s.shouldShowWinner && zombie.position.X() >= s.quad.GetSize().X() {
 		zombie.isWinner = true
 		s.winnerQuad.SetTexture(g.NewTextureFromFile(zombie.mugshotTexturePath))
 		s.winnerQuad.SetSizeFromTexture()
 		s.winnerQuad.SetScale(mgl32.Vec2{0.7, 0.7})
 		s.winnerQuad.SetAnchorToCenter()
-		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
+		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h) / 2, 0.01})
 		s.shouldShowWinner = true
 	}
 }
 
-func (s *Scene)UpdatePlayerPos(player *Player) {
+func (s *Scene) UpdatePlayerPos(player *Player) {
 	if !s.shouldShowWinner && player.position.X() >= s.quad.GetSize().X() {
 		player.isWinner = true
 		s.winnerQuad.SetTexture(g.NewTextureFromFile(player.mugshotTexturePath))
 		s.winnerQuad.SetSizeFromTexture()
 		s.winnerQuad.SetScale(mgl32.Vec2{0.6, 0.6})
 		s.winnerQuad.SetAnchorToCenter()
-		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
+		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h) / 2, 0.01})
 		s.shouldShowWinner = true
 	}
-	if player.position.X() > s.x + 1600 {
+	if player.position.X() > s.x+1600 {
 		s.x = player.position.X() - 1600
 	}
 }
 
-func (s *Scene) Draw(ctx *g.Context)  {
+func (s *Scene) Draw(ctx *g.Context) {
 	s.quad.Draw(ctx)
 	if s.shouldShowWinner {
 		s.winnerQuad.Draw(ctx)
 	}
 }
 
-func (s * Scene) X() float32 {
+func (s *Scene) X() float32 {
 	return s.x
 }

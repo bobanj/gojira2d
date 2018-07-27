@@ -17,7 +17,7 @@ type bar struct {
 }
 
 var (
-	win                  = window{w: 1920, h: 1080}
+	win      = window{w: 1920, h: 1080}
 	gogoQuad *g.Primitive2D
 	gogoAnim float64
 	track0   Track
