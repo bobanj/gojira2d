@@ -16,12 +16,12 @@ type Scene struct {
 func NewScene() *Scene {
 	p := &Scene{}
 	p.shouldShowWinner = false
-	p.quad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.4}, mgl32.Vec2{0, 0})
+	p.quad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.6}, mgl32.Vec2{0, 0})
 	p.quad.SetAnchorToCenter()
 	t := g.NewTextureFromFile("bojack/sprites/bg/background.png")
 	p.quad.SetTexture(t)
 	p.quad.SetSizeFromTexture()
-	p.winnerQuad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.1}, mgl32.Vec2{0, 0})
+	p.winnerQuad = g.NewQuadPrimitive(mgl32.Vec3{100, 100, 0.01}, mgl32.Vec2{0, 0})
 	return p
 }
 
@@ -34,9 +34,9 @@ func (p *Scene) Update(speed float64) {
 
 func (p *Scene)UpdatePlayerPos(player *Player) {
 	if player.position.X() >= p.quad.GetSize().X() {
-		p.winnerQuad.SetAnchorToCenter()
 		p.winnerQuad.SetTexture(g.NewTextureFromFile(player.mugshotTexturePath))
-		p.quad.SetSizeFromTexture()
+		p.winnerQuad.SetSizeFromTexture()
+		p.winnerQuad.SetAnchorToCenter()
 		p.shouldShowWinner = true
 	}
 	if player.position.X() > p.x + 1600 {
