@@ -26,7 +26,7 @@ func main() {
 			4,
 			glfw.KeyB,
 			0,
-			),
+		),
 		NewPlayer(
 			mgl32.Vec3{-350, 980, 0.2},
 			mgl32.Vec2{0.4, 0.4},
@@ -34,7 +34,7 @@ func main() {
 			4,
 			glfw.KeyM,
 			150,
-			),
+		),
 		NewPlayer(
 			mgl32.Vec3{-500, 1040, 0.1},
 			mgl32.Vec2{0.34, 0.34},
@@ -42,7 +42,7 @@ func main() {
 			4,
 			glfw.KeyT,
 			300,
-			),
+		),
 	}
 	zombies := []*Zombie{
 		NewZombie(mgl32.Vec3{-500, 970, 0.25}, mgl32.Vec2{0.33, 0.33}, "zombie", 3),
@@ -61,7 +61,7 @@ func main() {
 		}
 		for _, player := range players {
 			player.Update(scene)
-			if zombies[0].position.X() >= player.position.X() || zombies[1].position.X() >= player.position.X() {
+			if scene.X() >0 && (zombies[0].position.X()+100 >= player.position.X() || zombies[1].position.X()+100 >= player.position.X()) {
 				player.isDead = true
 			}
 		}
