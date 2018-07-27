@@ -64,14 +64,7 @@ func NewPlayer(
 }
 
 func (p *Player) UpdateIntro(scene *Scene) {
-	p.animationSpeed += float32(math.Min(float64(p.speed), 6))
-	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
-	absPos := p.position
-	absPos = absPos.Add(mgl32.Vec3{p.speed, 0, 0})
-	p.position = absPos
-	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
-	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
-	scene.UpdatePlayerPos(p.position.X())
+	p.updateSprite(scene)
 	//log.Printf("%s calc: %f:", p.playerName, p.position.X() + p.offsetXStartLine)
 	if p.position.X() + p.offsetXStartLine >= playersStopAtX {
 		p.canStart = true
@@ -96,6 +89,11 @@ func (p *Player) RunRunRun(scene *Scene) {
 		p.speed /= 2
 	}
 
+	p.updateSprite(scene)
+	//log.Printf("CURRENT POSITION #%d:", p.currentFrameIndex)
+}
+
+func (p *Player)updateSprite(scene *Scene) {
 	p.animationSpeed += float32(math.Min(float64(p.speed), 3))
 	p.currentFrameIndex = int(p.animationSpeed/10) % p.numberOfFrames
 	absPos := p.position
@@ -103,7 +101,6 @@ func (p *Player) RunRunRun(scene *Scene) {
 	p.position = absPos
 	p.quad.SetPosition(p.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
 	p.quad.SetTexture(p.runningSprites[p.currentFrameIndex])
-	//log.Printf("CURRENT POSITION #%d:", p.currentFrameIndex)
 	scene.UpdatePlayerPos(p.position.X())
 }
 
