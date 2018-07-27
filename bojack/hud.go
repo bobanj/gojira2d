@@ -6,10 +6,6 @@ import (
 	"math"
 )
 
-const (
-	windowOfOpportunity = 0.2
-)
-
 type window struct {
 	w, h int
 }
@@ -21,12 +17,10 @@ type bar struct {
 }
 
 var (
-	win            = window{w: 1920, h: 1080}
-	buttonPressed  *g.Primitive2D
-	buttonReleased *g.Primitive2D
-	gogoQuad       *g.Primitive2D
-	gogoAnim       float64
-	track          Track
+	win      = window{w: 1920, h: 1080}
+	gogoQuad *g.Primitive2D
+	gogoAnim float64
+	track    Track
 
 	FragmentShaderTexture = `
        #version 410 core
@@ -44,17 +38,6 @@ var (
 )
 
 func createHud() {
-	buttonPressed = g.NewQuadPrimitive(
-		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40, -1},
-		mgl32.Vec2{96, 80},
-	)
-	buttonPressed.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_pressed.png"))
-
-	buttonReleased = g.NewQuadPrimitive(
-		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40, -1},
-		mgl32.Vec2{96, 80},
-	)
-	buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 	track = NewTrack(win)
 }
 
@@ -92,16 +75,7 @@ func releaseOpportunity() bool {
 }
 
 func drawHud(ctx *g.Context) {
-	if track.isEmpty() {
-		buttonReleased.EnqueueForDrawing(ctx)
-		return
-	}
-
-	if shouldPress() {
-		buttonPressed.EnqueueForDrawing(ctx)
-	} else {
-		buttonReleased.EnqueueForDrawing(ctx)
-	}
+	track.DrawButton(ctx)
 }
 
 func drawBars(ctx *g.Context) {

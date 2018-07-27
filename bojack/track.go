@@ -8,7 +8,13 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 )
 
+const (
+	windowOfOpportunity = 0.2
+)
+
 type Track struct {
+	buttonPressed    *g.Primitive2D
+	buttonReleased   *g.Primitive2D
 	creationTime     float32
 	endTime          float32
 	quad             *g.Primitive2D
@@ -77,6 +83,18 @@ func (track *Track) Draw(ctx *g.Context) {
 		e.Value.(bar).quad.EnqueueForDrawing(ctx)
 	}
 }
+func (track *Track) DrawButton(ctx *g.Context) {
+	if track.isEmpty() {
+		track.buttonReleased.EnqueueForDrawing(ctx)
+		return
+	}
+
+	if shouldPress() {
+		track.buttonPressed.EnqueueForDrawing(ctx)
+	} else {
+		track.buttonReleased.EnqueueForDrawing(ctx)
+	}
+}
 
 func (track *Track) shouldPress() bool {
 	if track.bars.Len() == 0 {
@@ -105,7 +123,7 @@ func (track *Track) releaseOpportunity() bool {
 	return mgl32.Abs(lastBar.endTime-endTime) < windowOfOpportunity
 }
 
-func (track *Track) isEmpty() bool{
+func (track *Track) isEmpty() bool {
 	return track.bars.Back() == nil
 }
 
@@ -117,6 +135,18 @@ func NewTrack(win window) Track {
 	track.barHeight = float32(274)
 	track.sizeInterpolator = float32(win.w-80) / 3
 	track.barEnd = 3 * track.sizeInterpolator
+
+	track.buttonPressed = g.NewQuadPrimitive(
+		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40, -1},
+		mgl32.Vec2{96, 80},
+	)
+	track.buttonPressed.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_pressed.png"))
+
+	track.buttonReleased = g.NewQuadPrimitive(
+		mgl32.Vec3{track.barEnd - 48, 1080 - track.barHeight/2 - 40, -1},
+		mgl32.Vec2{96, 80},
+	)
+	track.buttonReleased.SetTexture(g.NewTextureFromFile("bojack/sprites/button/button_unpressed.png"))
 
 	return track
 }
