@@ -14,45 +14,46 @@ type Scene struct {
 }
 
 func NewScene() *Scene {
-	p := &Scene{}
-	p.shouldShowWinner = false
-	p.quad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.6}, mgl32.Vec2{0, 0})
-	p.quad.SetAnchorToCenter()
+	s := &Scene{}
+	s.shouldShowWinner = false
+	s.quad = g.NewQuadPrimitive(mgl32.Vec3{0, 0, 0.6}, mgl32.Vec2{0, 0})
+	s.quad.SetAnchorToCenter()
 	t := g.NewTextureFromFile("bojack/sprites/bg/background.png")
-	p.quad.SetTexture(t)
-	p.quad.SetSizeFromTexture()
-	p.winnerQuad = g.NewQuadPrimitive(mgl32.Vec3{100, 100, 0.01}, mgl32.Vec2{0, 0})
-	return p
+	s.quad.SetTexture(t)
+	s.quad.SetSizeFromTexture()
+	s.winnerQuad = g.NewQuadPrimitive(mgl32.Vec3{100, 100, 0.01}, mgl32.Vec2{0, 0})
+	return s
 }
 
-func (p *Scene) Update(speed float64) {
-	if p.x + 1920 >= 8884 {
-		p.x = 8884 - 1920
+func (s *Scene) Update(speed float64) {
+	if s.x + 1920 >= 8884 {
+		s.x = 8884 - 1920
 	}
-	p.quad.SetPosition(mgl32.Vec3{-p.x, 0, 1.0})
+	s.quad.SetPosition(mgl32.Vec3{-s.x, 0, 1.0})
 }
 
-func (p *Scene)UpdatePlayerPos(player *Player) {
-	if !p.shouldShowWinner && player.position.X() >= p.quad.GetSize().X() {
-		p.winnerQuad.SetTexture(g.NewTextureFromFile(player.mugshotTexturePath))
-		p.winnerQuad.SetSizeFromTexture()
-		p.winnerQuad.SetScale(mgl32.Vec2{0.6, 0.6})
-		p.winnerQuad.SetAnchorToCenter()
-		p.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
-		p.shouldShowWinner = true
+func (s *Scene)UpdatePlayerPos(player *Player) {
+	if !s.shouldShowWinner && player.position.X() >= s.quad.GetSize().X() {
+		player.isWinner = true
+		s.winnerQuad.SetTexture(g.NewTextureFromFile(player.mugshotTexturePath))
+		s.winnerQuad.SetSizeFromTexture()
+		s.winnerQuad.SetScale(mgl32.Vec2{0.6, 0.6})
+		s.winnerQuad.SetAnchorToCenter()
+		s.winnerQuad.SetPosition(mgl32.Vec3{float32(win.w) / 2, float32(win.h)/2, 0.01})
+		s.shouldShowWinner = true
 	}
-	if player.position.X() > p.x + 1600 {
-		p.x = player.position.X() - 1600
-	}
-}
-
-func (p *Scene) Draw(ctx *g.Context)  {
-	p.quad.Draw(ctx)
-	if p.shouldShowWinner {
-		p.winnerQuad.Draw(ctx)
+	if player.position.X() > s.x + 1600 {
+		s.x = player.position.X() - 1600
 	}
 }
 
-func (p* Scene) X() float32 {
-	return p.x
+func (s *Scene) Draw(ctx *g.Context)  {
+	s.quad.Draw(ctx)
+	if s.shouldShowWinner {
+		s.winnerQuad.Draw(ctx)
+	}
+}
+
+func (s * Scene) X() float32 {
+	return s.x
 }
