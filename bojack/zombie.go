@@ -9,6 +9,7 @@ import (
 
 type Zombie struct {
 	quad                  *g.Primitive2D
+	shadowQuad            *g.Primitive2D
 	speed                 float32
 	position              mgl32.Vec3
 	runningSprites        []*g.Texture
@@ -35,11 +36,17 @@ func NewZombie(position mgl32.Vec3, scale mgl32.Vec2, playerName string, numberO
 	zombie.quad.SetScale(scale)
 	zombie.quad.SetAnchorToBottomCenter()
 	zombie.animationSpeed = 0.05
+
+	zombie.shadowQuad = g.NewQuadPrimitive(position, mgl32.Vec2{0, 0})
+	zombie.shadowQuad.SetTexture(g.NewTextureFromFile("bojack/sprites/shadow.png"))
+	zombie.shadowQuad.SetSizeFromTexture()
+	zombie.shadowQuad.SetScale(mgl32.Vec2{0.8, 0.6})
+	zombie.shadowQuad.SetAnchorToCenter()
 	return zombie
 }
 
-func (zombie *Zombie) Update(scene *Scene)  {
-	if zombie.position.X() < scene.X() - 120 {
+func (zombie *Zombie) Update(scene *Scene) {
+	if zombie.position.X() < scene.X()-120 {
 		zombie.position = mgl32.Vec3{scene.X() - 120, zombie.position.Y(), zombie.position.Z()}
 	}
 
@@ -48,9 +55,11 @@ func (zombie *Zombie) Update(scene *Scene)  {
 	absPos = absPos.Add(mgl32.Vec3{zombie.speed, 0, 0})
 	zombie.position = absPos
 	zombie.quad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X(), 0, 0}))
+	zombie.shadowQuad.SetPosition(zombie.position.Sub(mgl32.Vec3{scene.X() + 40, 0, -0.05}))
 	zombie.quad.SetTexture(zombie.runningSprites[int(zombie.currentSpritePosition)])
 }
 
 func (zombie *Zombie) Draw(ctx *g.Context) {
+	zombie.shadowQuad.EnqueueForDrawing(ctx)
 	zombie.quad.EnqueueForDrawing(ctx)
 }
