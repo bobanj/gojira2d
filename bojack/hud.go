@@ -6,8 +6,7 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 	"container/list"
 	"math/rand"
-	"github.com/markov/gojira2d/pkg/ui"
-)
+		)
 
 const windowOfOpportunity = 0.2
 
@@ -29,8 +28,7 @@ var (
 	sizeInterpolator = float32(win.w-80) / 3
 	barStart         = float32(20)
 	barEnd           = 3 * sizeInterpolator
-	gogoTc           *ui.Text
-	gogoTimer        float32
+	gogoQuad           *g.Primitive2D
 )
 
 func createHud() {
@@ -49,34 +47,17 @@ func createHud() {
 }
 
 func createGoGoGo() {
-	gogoFont := ui.NewFontFromFiles(
-		"regular",
-		"examples/assets/fonts/roboto-mono-regular.fnt",
-		"examples/assets/fonts/roboto-mono-regular.png",
-	)
-	gogoColor := g.Color{
-		255,
-		0,
-		0,
-		0.9,
-	}
-	gogoTc = ui.NewText(
-		"GO GO GO!!!!",
-		gogoFont,
-		mgl32.Vec3{300, 200, 0.1},
-		mgl32.Vec2{200, 150},
-		gogoColor,
-		mgl32.Vec4{0, 0, 0, -.17},
-	)
+	gogoQuad = g.NewQuadPrimitive(mgl32.Vec3{600, 310, 0.1}, mgl32.Vec2{0, 0})
+	gogoQuad.SetAnchorToCenter()
+	gogoQuad.SetTexture(g.NewTextureFromFile("bojack/sprites/bg/gogogo.png"))
+	gogoQuad.SetSizeFromTexture()
+	gogoQuad.SetScale(mgl32.Vec2{0.7, 0.7})
 }
 
-func drawGoGoGo(ctx *g.Context, player *Player) {
-	gogoTimer = float32(glfw.GetTime())
-	//if gogoTimer > 8.5 && gogoTimer < 9.5 {
-	//	gogoTc.EnqueueForDrawing(ctx)
-	//}
-	if player.canStart && gogoTimer < 9.8 {
-		gogoTc.EnqueueForDrawing(ctx)
+func drawGoGoGo(ctx *g.Context, player *Player, scene *Scene) {
+	//gogoQuad.EnqueueForDrawing(ctx)
+	if player.canStart && scene.X() == 0 {
+		gogoQuad.EnqueueForDrawing(ctx)
 	}
 }
 

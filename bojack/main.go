@@ -72,6 +72,6 @@ func main() {
 			zombie.Draw(app.Context)
 		}
 		drawHud(app.UIContext)
-		drawGoGoGo(app.UIContext, players[2])
+		drawGoGoGo(app.UIContext, players[2], scene)
 	})
 }
