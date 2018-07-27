@@ -21,31 +21,33 @@ func UnregisterKeyCallback() {
 
 func HandleKeyPress(key glfw.Key, action glfw.Action, players []*Player) {
 	var keyPressed bool
-	switch action {
-	case glfw.Press:
-		keyPressed = true
-	case glfw.Release:
-		keyPressed = false
-	default:
-		return
-	}
-	for _, p := range players {
-		if key == p.key {
-			p.lastKeyInteraction = glfw.GetTime()
-			if pressOpportunity() {
-				if keyPressed {
-					p.speedUp()
-				} else {
+	if players[0].canStart && players[1].canStart && players[2].canStart {
+		switch action {
+		case glfw.Press:
+			keyPressed = true
+		case glfw.Release:
+			keyPressed = false
+		default:
+			return
+		}
+		for _, p := range players {
+			if key == p.key {
+				p.lastKeyInteraction = glfw.GetTime()
+				if pressOpportunity() {
+					if keyPressed {
+						p.speedUp()
+					} else {
+						p.slowDown()
+					}
+				} else if releaseOpportunity() {
+					if keyPressed {
+						p.slowDown()
+					} else {
+						p.speedUp()
+					}
+				} else if shouldPress() != keyPressed {
 					p.slowDown()
 				}
-			} else if releaseOpportunity() {
-				if keyPressed {
-					p.slowDown()
-				} else {
-					p.speedUp()
-				}
-			} else if shouldPress() != keyPressed {
-				p.slowDown()
 			}
 		}
 	}
